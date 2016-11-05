@@ -1,0 +1,227 @@
+Places Demo Video Script
+
+- VORBEREITEN: About Dialog: Versionsnummer, Author: T. Radde
+- VORBEREITEN: Testen: Fonts + Scanner gingen eben nicht
+- VORBEREITEN: Bitrate auf 4.000 und CBR ausschalten!
+- VORBEREITEN: IDEAL Software Icon weg
+- VORBEREITEN: gruppe von icons zum reinziehen
+- VORBEREITEN: einen ordner und eine datei zum reinziehen
+
+xmas2015
+
+Hello, my name is Thorsten.
+In this video, I would like to introduce a software called Places.
+
+Places is a desktop application, which runs in the background.
+It can be activated at any time with the keyboard or mouse.
+
+This is, how it looks like.
+
+The main philosophy behind Places is, that if you once place an icon in a position,
+it will stay there for always.
+That is, why the program carries its name.
+You can freely position icons, and Places will never re-arrange or sort them,
+even if you change the screen resolution. Instead the icons are scaled accordingly.
+
+Let me demonstrate this by dragging the task bar.
+
+Because you will find the icons always at the same position, Places enables you to 
+launch programs as quickly as possible without thinking or searching.
+
+Also the number of columns and rows can be changed in the settings.
+
+------------------- BREAK -----------------------
+I am a software developer, and as a heavy-user I need to launch many different programs
+at different times.
+
+So my main design goal for Places was, to be able to launch applications as quickly as
+possible with the least number of mouse clicks or key strokes.
+
+As a result, I decided that icons have to stay always in the same position where you 
+once placed them, so they can be located quickly and without thinking.
+
+My second design decision was, that the icon's positions can be specified freely.
+Places does no dictate where icons are positioned, and it does not re-arrange them.
+
+That is, why the program carries its name: everything stays always in the same place.
+[As a result, places enables you to launch programs as quickly as possible.]
+
+------------------- BREAK -----------------------
+
+In the following, I will give a quick demonstration what can be done with places.
+You do not need to memorize the keyboard and mouse commands, they are listed in detail
+in the readme-file, which is installed together with Places.
+To get the most out of Places, I recommend to read it.
+
+As you can see, I arranged my icons in groups with a functional structure
+- this are for example software development tools
+- and this group represents tools for editing bitmaps and graphics
+
+On the second page I have placed tools for making music, and on the third page are 
+less often used tools and games.
+
+Places provides a total of ten pages.
+You can scroll through the pages in different ways:
+- by dragging with the mouse
+- using the scroll wheel of the mouse
+- by clicking onto the page indicators
+- entering a digit from one to zero on the keyboard
+
+Places can be moved into background by:
+- clicking into the free space
+- pressing the escape key
+
+------------------- BREAK -----------------------
+
+Working with icons:
+
+- adding icons
+	- Fullscreen mit Explorer Fenster im Vordergrund ==> add exe
+	- Windowed Mode ==> add document
+	- right click on blank area "new icon": demo facebook-http-link, mit icon download
+	- reload icons
+- short left-click onto icon: open / execute
+- moving icons
+- moving icons to another page
+- icon properties ==> change title or icon
+- delete
+- ctrl + click, select multiple icons
+- lasso
+		special: add-select (shift + alt) and subtract-deselect (ctrl + alt)
+				if the lasso covers and then un-covers icons, their previous state is restored!
+- undo / redo
+
+
+------------------- BREAK -----------------------
+Let's take a look at the settings dialog.
+
+With a right click you can choose settings.
+
+- The top area defines how to activate Places.
+- I have a five button mouse, and I can always actrivate Places with a single click onto a special button.
+
+- In the next part you can define the background.
+- Shaders are very interesting. They are small programs which directly run on your graphics card and allow interesting effects.
+- Places installs several shaders, which were written by other people.
+  If you open a shader file with notepad, you can see the name of its author.
+- My favorite is ether.
+- Under water
+- Fire
+
+- Background image
+
+- fixed color
+
+I will switch back to fixed color, because the animated background makes video compression much less efficient and
+would cause this video stream to become much bigger and to require much more bandwidth.
+
+- Rows / columns
+
+- hochsetzen
+
+- Resize Taskbar
+
+- zurück auf 15 x 7
+
+------------------- BREAK -----------------------
+
+- Thanks for watching and have a nice day.
+
+------------------- Ende -----------------------
+
+	
+
+As a result, a fundamental design decision was, that icons always stay in the same position where they once were placed,
+regardless of the screen resolution and other factors.
+
+The second design decision was, that icons can be placed freely in any position, so the user defines by himself the icon layout.
+When a new icon is added, or if icons are moved or deleted, the positions of all other icons remain unaffected.
+	
+
+	- this is what it looks like after a fresh installation
+	
+		- default icons, will be german on german windows
+		
+		- installed automatically as autostart
+	
+	- what is places good for?
+
+	- one problem: show desktop with many open windows, now accessing a desktop icon is impossible
+		- the hide all windows button is useless (show in video)
+		
+	- second problem most of you are aware of: changing the screen resolution
+		- Windows re-arranges the icons at will
+		- Places scales the icons, they stay in their position
+			==> simulation: resize and reposition taskbar
+
+	Design Goals
+	-   Starting applications or opening folder-/ file links as quick as possible with the least number of user interactions
+		(i.e. mouse clicks, pressing keys).
+
+	-   Everything stays in its place: icons will always stay in the same position, where you once placed them.
+
+		- there is no sorting or re-ordering
+
+		- and it is screen resolution independent: if the resolution changes, the icons do not change their positions, 
+			they are scaled up or down in size as required
+			
+		As a result you will always find your icons at the same position with a quick mouse click.
+
+		==> that is why the program has its name: everything stays always in the same place
+
+		==> and Places runs in the background and can be activated through several different methods while working with other programs
+	
+	- recommend reading "readme.txt", lists all keyboard shortcuts and mouse functions and contains 
+		additional useful information to get the best out of places. It also explains where the database file is located,
+		if you wish to create backups.
+		
+==> Short BREAK: in the following I will use my personal setup
+- VORBEREITEN: IDEAL Software Icon weg
+		- how to activate
+			- taskbar click icon
+			- define keyboard shortcut
+			- define mouse button
+			- move mouse into right-top corner
+			- double-click into free desktop space
+			
+		- how to close
+			- left click onto blank area
+			- ESC key
+			
+	- Settings Dialog + Shaders
+		==> bei 1920 x 1200 kann man 16 x 8 statt 16 x 7 icon layout wählen
+		
+	- add icons
+		- windowed mode und draggen
+			- it is also possible to drag a folder or a file into places ==> vorführen
+			- geht auch vom startmenü
+			- Pitfall: if you drag a link (for example from the desktop), and you later delete the original link from the desktop,
+			  the icon in places will no longer work. i.e. nothing will happen if you click onto it. This is so, because the icon
+			  in Places will point to a non-existing link.
+
+		- short left-click onto icon: open / execute
+		- long left-click onto icon: select
+		- ctrl + left-click onto icon: select / deselect; other selected icons stay selected
+		- right-click onto icon to choose between "properties" or "remove"
+			- properties ==> change title or icon
+		- left-click onto selected icon(s) and drag the mouse: move selected icon(s)
+		
+		- right click on blank area "new icon": demo facebook-http-link, mit icon download
+		- reload icons
+		
+	- mouse scrolling
+		- drag
+		- scroll wheel
+		- navbuttons on bottom
+		- keyboard digits
+		- screen up / down
+		
+	- Lasso
+		special: add-select (shift + alt) and subtract-deselect (ctrl + alt)
+				if the lasso covers and then un-covers icons, their previous state is restored!
+				
+	- move icon(s)
+		- move to another page
+		==> what it means if icons are moved back
+		
+	- undo / redo
