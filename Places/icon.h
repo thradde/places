@@ -118,6 +118,7 @@ public:
 	enum EIconState
 	{
 		enStateNormal,
+		enStateOpen,		// icon is clicked to open a program / link
 		enStateBlowup,
 
 		// for all following states, the title text is drawn inverted

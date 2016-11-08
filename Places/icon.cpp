@@ -504,13 +504,14 @@ bool CIcon::SetState(EIconState state, bool scale_now)
 	if (m_enState == state)
 		return false;
 
-	m_enState = state;
 	m_fSpriteScaleInc = 0.02f;	// animate slowly
 
 	switch(state)
 	{
 	case enStateNormal:
 		m_fTargetScale = 1.f;
+		if (m_enState == enStateOpen)
+			m_fSpriteScaleInc = 0.125f; // animate fast
 		m_Sprite.setColor(sf::Color(255, 255, 255, 255));
 		break;
 
@@ -524,11 +525,18 @@ bool CIcon::SetState(EIconState state, bool scale_now)
 		//m_Sprite.setColor(colorHighlight);
 		break;
 
+	case enStateOpen:
+		m_fSpriteScaleInc = 0.125f; // animate fast
+		m_fTargetScale = 2.f;
+		break;
+
 	case enStateBlowup:
 		m_fSpriteScaleInc = 0.125f; // animate fast
 		m_fTargetScale = 4.f;
 		break;
 	}
+
+	m_enState = state;
 
 	if (scale_now)
 	{

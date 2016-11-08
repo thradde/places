@@ -119,6 +119,8 @@ using namespace std;
 bool gbTerminateActivityThread;
 unsigned __stdcall ActivityThread(void *param);
 unsigned __stdcall ResyncThread(void *param);
+unsigned __stdcall ShellExecuteThread(void *param);
+
 
 /*
 TODO:
@@ -1312,7 +1314,7 @@ protected:
 		enFmFadeOut,
 	};
 
-protected:
+public:				// need access by external thread function to avoid delays when calling ShellExecute()
 	int				m_nDesktopWidth;
 	int				m_nDesktopHeight;
 	RString			m_strDatabasePath;
@@ -1365,9 +1367,13 @@ protected:
 	HANDLE			m_hActivityThread;
 	HANDLE			m_hResyncThread;
 
+	RString			m_strOpenLocPath;			// path retrieved from an icon, for OpenLocation() / ShellExecute()
+	RString			m_strOpenLocParams;			// parameters retrieved from an icon, for OpenLocation() / ShellExecute()
+
 	bool			m_bDoFadeInOut;				// fades window in on show window and out on hide window
 	EFadeMode		m_enFade;					// 0 no fade, 1 = fade-in, 2=fade-out
 	float			m_fFadeValue;				// current alpha value of fade effect
+	bool			m_bHideWithDelay;			// hide main window with delay (to make icon animation visible before closing)
 
 	// system related
 	HWND			m_hwndProgman;
@@ -1398,6 +1404,7 @@ public:
 			m_bDrawActivityOnly(false),
 			m_bDoFadeInOut(true),
 			m_enFade(enFmNoFade),
+			m_bHideWithDelay(false),
 			m_bChangeWindowLayout(false)
 	{
 		gbHotkeyVKey = 0;		// virtual key code for app activation
@@ -1519,6 +1526,7 @@ public:
 	bool DesktopResolutionChanged()
 	{
 		sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
 		return m_nDesktopWidth != desktop.width || m_nDesktopHeight != desktop.height;
 	}
 
@@ -1827,6 +1835,11 @@ m_Window.setVerticalSyncEnabled(false);
 			ShowWindow(m_Window.getSystemHandle(), SW_HIDE);
 	}
 
+	void HideMainWindowWithDelay()
+	{
+		m_bHideWithDelay = true;
+	}
+
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 	//															CMyApp::SetupBackground()
@@ -1985,7 +1998,7 @@ m_Window.setVerticalSyncEnabled(false);
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 	//															CMyApp::OpenLocation()
 	// --------------------------------------------------------------------------------------------------------------------------------------------
-	void OpenLocation(CIcon *icon)
+	void RetrieveOpenLocation(CIcon *icon)
 	{
 		RString path;
 
@@ -1998,8 +2011,29 @@ m_Window.setVerticalSyncEnabled(false);
 		else
 			path = icon->m_strFilePath;
 
-		ShellExecute(m_Window.getSystemHandle(), _T("open"), path.c_str(), icon->m_strParameters.c_str(), GetPath(path).c_str(), SW_SHOWNORMAL);
-		icon->SetState(CIcon::enStateNormal, true);
+		m_strOpenLocPath = path;
+		m_strOpenLocParams = icon->m_strParameters;
+	}
+
+
+	void OpenLocation()
+	{
+		if (!m_strOpenLocPath.empty())
+		{
+			// When calling ShellExecute(), Windows causes a huge delay, either because a virus scanner starts scanning the executable, or due
+			// to network access by the domain controller. Therefore we call ShellExecute() from a thread.
+			unsigned aID;
+			_beginthreadex(NULL, 0, ShellExecuteThread, this, 0, &aID);
+		}
+	}
+
+
+	void OpenIcon()
+	{
+		CIcon *icon = m_IconManager.GetSelectedIcons().front();
+		m_IconManager.SetIconState(icon, CIcon::enStateOpen);
+		HideMainWindowWithDelay();
+		RetrieveOpenLocation(icon);		// OpenLocation() is called, when the icon animation has finished
 	}
 
 
@@ -2550,11 +2584,7 @@ m_Window.setVerticalSyncEnabled(false);
 				m_posKbdCursor = m_pKbdCursorIcon->GetPosition();
 
 				if (m_IconManager.GetSelectedIcons().size() == 1 && m_ClickClock.getElapsedTime().asMilliseconds() < 300)
-				{
-					HideMainWindow();
-					CIcon *icon = m_IconManager.GetSelectedIcons().front();
-					OpenLocation(icon);
-				}
+					OpenIcon();
 			}
 			else if (m_bIsDraggingIcons)
 			{
@@ -2988,11 +3018,7 @@ m_Window.setVerticalSyncEnabled(false);
 		else if (event.key.code == sf::Keyboard::Return)
 		{
 			if (m_IconManager.GetSelectedIcons().size() == 1)
-			{
-				HideMainWindow();
-				CIcon *icon = m_IconManager.GetSelectedIcons().front();
-				OpenLocation(icon);
-			}
+				OpenIcon();
 		}
 		else if (event.key.control)	// ctrl-key is down
 		{
@@ -3101,6 +3127,28 @@ m_Window.setVerticalSyncEnabled(false);
 					m_bResync = false;
 			}
 		}*/
+
+		if (m_bHideWithDelay)
+		{
+			if (m_IconManager.GetSelectedIcons().size() > 0)
+			{
+				CIcon *icon = m_IconManager.GetSelectedIcons().front();
+
+				if (icon->m_fTargetScale == icon->m_Sprite.getScale().x)
+				{
+					m_bHideWithDelay = false;
+					m_IconManager.SetIconState(icon, CIcon::enStateNormal);
+					HideMainWindow();
+					OpenLocation();
+				}
+			}
+			else
+			{
+				m_bHideWithDelay = false;
+				HideMainWindow();
+				OpenLocation();
+			}
+		}
 
 		if (m_enFade == enFmFadeIn)
 		{
@@ -3345,11 +3393,30 @@ unsigned __stdcall ActivityThread(void *param)
 }
 
 
+// --------------------------------------------------------------------------------------------------------------------------------------------
+//																ResyncThread()
+// --------------------------------------------------------------------------------------------------------------------------------------------
 unsigned __stdcall ResyncThread(void *param)
 {
 	CIconManager *icon_manager = (CIconManager *)param;
 
 	icon_manager->ResyncIcons();
+
+	return 1;
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------
+//																ShellExecuteThread()
+//
+// When calling ShellExecute(), Windows causes a huge delay, either because a virus scanner starts scanning the executable, or due
+// to network access by the domain controller. Therefore we call ShellExecute() from a thread.
+// --------------------------------------------------------------------------------------------------------------------------------------------
+unsigned __stdcall ShellExecuteThread(void *param)
+{
+	CMyApp *app = (CMyApp *)param;
+	ShellExecute(app->GetRenderWindow().getSystemHandle(), _T("open"), app->m_strOpenLocPath.c_str(), app->m_strOpenLocParams.c_str(), GetPath(app->m_strOpenLocPath).c_str(), SW_SHOWNORMAL);
+	app->m_strOpenLocPath.clear();
 
 	return 1;
 }
