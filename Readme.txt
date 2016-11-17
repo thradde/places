@@ -140,6 +140,12 @@ SFML
 Places uses SFML, which is a very good multi-media library for C++.
 
 
+Acknowledgements
+----------------
+The "click" sound when opening an icon is used under CC Attribution license.
+Original sound by "lebcraftlp" from freesound.org.
+
+
 Backup
 ------
 If you wish to backup the configuration of Places, you need to backup the folder "%appdata%\Places"
