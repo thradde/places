@@ -2032,6 +2032,7 @@ m_Window.setVerticalSyncEnabled(false);
 	{
 		CIcon *icon = m_IconManager.GetSelectedIcons().front();
 		m_IconManager.SetIconState(icon, CIcon::enStateOpen);
+		PlaySound(_T("WAVE_CLICK"), ghInstance, SND_RESOURCE | SND_ASYNC); 
 		HideMainWindowWithDelay();
 		RetrieveOpenLocation(icon);		// OpenLocation() is called, when the icon animation has finished
 	}
