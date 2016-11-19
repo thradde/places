@@ -210,6 +210,9 @@
   <ItemGroup>
     <ResourceCompile Include="Places.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="Places.manifest" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

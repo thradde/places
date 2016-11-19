@@ -1715,6 +1715,8 @@ public:
 
 		m_Window.setIcon(app_icon.width, app_icon.height, app_icon.pixel_data); 
 		SetHookAppWindow(m_Window.getSystemHandle());
+		SetHookInstance(ghInstance);
+
 		if (m_bStartup && !m_bFirstTime)
 		{
 			ShowWindow(m_Window.getSystemHandle(), SW_HIDE);

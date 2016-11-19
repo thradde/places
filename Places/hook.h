@@ -23,6 +23,7 @@ extern volatile bool gbHookDoubleClick;	// same as above for mouse double click 
 
 
 void SetHookAppWindow(HWND hWndApp);
+void SetHookInstance(HINSTANCE hInstance);
 bool SetHooks();
 void ReleaseHooks();
 void HookTestMouseHover();		// Must be called periodically by main program to check for mouse hovering in a screen corner.
