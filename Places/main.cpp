@@ -1754,8 +1754,8 @@ m_Window.setVerticalSyncEnabled(false);
 		// don't make it too easy, scramble a bit (so year constant can not be found in hex editor)
 		time.wYear -= 2000;
 
-		// run until 2017/01/01
-		if (time.wYear >= 17 && time.wMonth >= 1)
+		// run until 2018/01/01
+		if (time.wYear >= 18 && time.wMonth >= 1)
 		{
 			MessageBox(m_Window.getSystemHandle(),
 				_T("The beta period for \"Places\" has expired.\n\n")
