@@ -74,7 +74,7 @@ void CSfmlApp::Run()
 		// event loop
 		while (m_Window.isOpen())
 		{
-			Sleep(15);	// 10
+			Sleep(5);	// 10
 			if (m_bRequestClose)
 			{
 				if (OnClose())
