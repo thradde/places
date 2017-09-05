@@ -407,13 +407,15 @@ TDefaultIcons gDefaultIcons[] =
 	_T("Computer\nManagement"),		_T("Computer\nVerwaltung"),		_T("computer-4.png"),					_T("<mmc>"),						_T("compmgmt.msc"),
 	_T("Drive\nManagement"),		_T("Datenträger\nVerwaltung"),	_T("server-database.png"),				_T("<mmc>"),						_T("diskmgmt.msc"),
 	_T("Device\nManagement"),		_T("Gerätemanager"),			_T("configure-4.png"),					_T("<mmc>"),						_T("devmgmt.msc"),
-	_T("IDEAL\nSoftware"),			_T("IDEAL\nSoftware"),			_T("globe.png"),						_T("http://www.idealsoftware.com"),	_T(""),
+	_T("Tenware"),					_T("Tenware"),					_T("globe.png"),						_T("http://www.tenware.net"),		_T(""),
+
 	_T("Control Panel"),			_T("System-\nsteuerung"),		_T("system-settings.png"),				_T("<control>"),					_T(""),
 	_T("Add / Remove\nPrograms"),	_T("Programme\nentfernen"),		_T("system-installer.png"),				_T("<control>"),					_T("appwiz.cpl"),
 	_T("Sound Settings"),			_T("Sound\nEinstellungen"),		_T("preferences-desktop-sound.png"),	_T("<control>"),					_T("mmsys.cpl sounds"),
 	_T("Devices\nand Printers"),	_T("Geräte\nund Drucker"),		_T("printer-7.png"),					_T("<control>"),					_T("printers"),
 	_T("Fonts"),					_T("Fonts"),					_T("fontforge.png"),					_T("<explorer>"),					_T("shell:Fonts"),
 	_T("Scanners\nand Cameras"),	_T("Scanner\nund Kameras"),		_T("camera-photo-10.png"),				_T("<control>"),					_T("sticpl.cpl"),
+	_T("Registry\nEditor"),			_T("Registry\nEditor"),			_T("regedit.png"),						_T("regedit.exe"),					_T(""),
 	nullptr,						nullptr,						nullptr,								nullptr,							nullptr,
 };
 
@@ -1755,12 +1757,12 @@ m_Window.setVerticalSyncEnabled(true);
 		// don't make it too easy, scramble a bit (so year constant can not be found in hex editor)
 		time.wYear -= 2000;
 
-		// run until 2018/01/01
-		if (time.wYear >= 18 && time.wMonth >= 1)
+		// run until 2019/01/01
+		if (time.wYear >= 19 && time.wMonth >= 1)
 		{
 			MessageBox(m_Window.getSystemHandle(),
 				_T("The beta period for \"Places\" has expired.\n\n")
-				_T("Please check at www.idealsoftware.com, if a newer version is available.\n\n"),
+				_T("Please check at www.tenware.net, if a newer version is available.\n\n"),
 				APP_NAME, MB_ICONERROR);
 			exit(1);
 		}

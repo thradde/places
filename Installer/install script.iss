@@ -7,7 +7,7 @@
 AppMutex=IS$$Mutex$$Places
 AppName={#MyAppName}
 AppVersion=1.0
-AppCopyright=Copyright (c) 2015 IDEAL Software GmbH
+AppCopyright=Copyright (c) 2017 Tenware BV
 PrivilegesRequired=none
 AppId={{7C7C7394-817D-401E-BDAD-1B662E3A97B9}
 LicenseFile=..\License.rtf
@@ -18,13 +18,13 @@ DefaultGroupName={#MyAppName}
 DefaultDirName={pf}\{#MyAppName}
 UninstallDisplayIcon={app}\{#MyAppName}.exe
 OutputBaseFilename={#MyAppName} Setup
-AppPublisher=IDEAL Software GmbH
-AppPublisherURL=www.idealsoftware.com
-AppSupportURL=www.idealsoftware.com
-AppUpdatesURL=www.idealsoftware.com
+AppPublisher=Tenware BV
+AppPublisherURL=www.tenware.net
+AppSupportURL=www.tenware.net
+AppUpdatesURL=www.tenware.net
 VersionInfoVersion=1.0
-VersionInfoCompany=IDEAL Software GmbH
-VersionInfoCopyright=Copyright (c) 2015 IDEAL Software GmbH. All rights reserved.
+VersionInfoCompany=Tenware BV
+VersionInfoCopyright=Copyright (c) 2017 Tenware BV. All rights reserved.
 VersionInfoProductName={#MyAppName}
 VersionInfoProductVersion=1.0
 VersionInfoProductTextVersion=1.0
@@ -39,6 +39,7 @@ Source: "..\OpenIconLibrary\user-trash-full.png"; DestDir: "{commonappdata}\{#My
 Source: "..\OpenIconLibrary\system-settings.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\system-installer.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\server-database.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
+Source: "..\OpenIconLibrary\regedit.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\printer-7.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\preferences-desktop-sound.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\network-local.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
