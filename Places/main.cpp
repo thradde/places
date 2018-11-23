@@ -1377,6 +1377,8 @@ public:				// need access by external thread function to avoid delays when calli
 	float			m_fFadeValue;				// current alpha value of fade effect
 	bool			m_bHideWithDelay;			// hide main window with delay (to make icon animation visible before closing)
 
+	RString			m_strLicense;				// owner of license
+
 	// system related
 	HWND			m_hwndProgman;
 	HWND			m_hwndDesktopListView;
@@ -1409,6 +1411,10 @@ public:
 			m_bHideWithDelay(false),
 			m_bChangeWindowLayout(false)
 	{
+#if 0
+		m_strLicense = _T("Registered to: Heinz Hartstein • Heinz-Hartstein@Arcor.de • Erlenweg  55 • 47877 Willich - Neersen");
+#endif
+
 		gbHotkeyVKey = 0;		// virtual key code for app activation
 		gbHotkeyModifiers = 0;	// modifiers for app activation (shift, ctrl, alt)
 
@@ -1750,6 +1756,7 @@ m_Window.setVerticalSyncEnabled(true);
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 	void CheckNagScreen()
 	{
+#if 0
 		SYSTEMTIME time;
 		
 		GetSystemTime(&time);
@@ -1766,6 +1773,7 @@ m_Window.setVerticalSyncEnabled(true);
 				APP_NAME, MB_ICONERROR);
 			exit(1);
 		}
+#endif
 	}
 
 
@@ -3363,6 +3371,25 @@ m_Window.setVerticalSyncEnabled(true);
 
 			// draw page indicators
 			m_PageIndicators.Draw(m_Window, m_IconManager.m_nCurPageNum);
+
+			// draw license string
+			if (!m_strLicense.empty())
+			{
+				float window_height = (float)gConfig.m_nWindowHeight;
+				float bottom_space = (float)gConfig.m_nBottomSpace;
+
+				float x = 20.f;
+				float y = window_height - bottom_space * .33f - bottom_space * .09f;
+
+				gConfig.m_pText->setString(m_strLicense.c_str());
+				gConfig.m_pText->setPosition(x + 1, y + 1);
+				gConfig.m_pText->setColor(sf::Color(0x40, 0x40, 0x40));
+				m_Window.draw(*gConfig.m_pText);
+
+				gConfig.m_pText->setPosition(x, y);
+				gConfig.m_pText->setColor(sf::Color(255, 255, 255));
+				m_Window.draw(*gConfig.m_pText);
+			}
 		}
 
 		if (m_Activity.GetVisible())
