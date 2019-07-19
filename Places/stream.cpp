@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "memdebug.h"
+
 #define ASSERT
 #include "RfwString.h"
 #include "exceptions.h"

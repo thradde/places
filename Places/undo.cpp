@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <Windowsx.h>
 
+#include "memdebug.h"
+
 #include <SFML/Graphics.hpp>
 
 #include <vector>

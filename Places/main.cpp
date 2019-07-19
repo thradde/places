@@ -67,6 +67,8 @@ return mean + z0 * sigma;
 #include <Windowsx.h>
 #include <Commctrl.h>
 
+#include "memdebug.h"
+
 #include <SFML/Graphics.hpp>
 
 #include <Shellapi.h>		// for DragAcceptFiles()
@@ -3522,15 +3524,24 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// init COM
 	CoInitializeEx(NULL, COINIT_MULTITHREADED  | COINIT_DISABLE_OLE1DDE); // COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	// Run App
-	CMyApp app;
-	app.Run();
+	CMyApp *app = new CMyApp();
+	app->Run();
+	delete app;
 
 	// cleanup
 	gConfig.Free();
 
 	// Uninitialize the COM Library
 	CoUninitialize();
+
+#ifdef _DEBUG
+//	_CrtDumpMemoryLeaks();
+#endif
 
 	return 0;
 }

@@ -28,6 +28,8 @@
 #include <Windows.h>
 #include <tchar.h>
 
+#include "memdebug.h"
+
 #include "SystemTraySDK.h"
 
 #ifdef _DEBUG

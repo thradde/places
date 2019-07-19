@@ -8,6 +8,8 @@
 #include <shlguid.h>
 #include <shellapi.h>
 
+#include "memdebug.h"
+
 #include <SFML/Graphics.hpp>
 
 #include <vector>

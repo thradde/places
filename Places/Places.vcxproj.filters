@@ -83,9 +83,6 @@
     <ClInclude Include="RfwString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\my_resampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resampler.h">
       <Filter>Libs</Filter>
     </ClInclude>
@@ -139,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="lodepng.h">
       <Filter>Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="my_resampler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

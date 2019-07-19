@@ -6,6 +6,8 @@
 #include "shobjidl.h"
 #include "shlguid.h"
 
+#include "memdebug.h"
+
 #include <SFML/Graphics.hpp>
 
 #include <vector>

@@ -8,6 +8,8 @@
 #include <tchar.h>
 #include <process.h>
 
+#include "memdebug.h"
+
 #include "hook.h"
 
 

@@ -37,7 +37,7 @@ public:
 			m_nRows(nRows),
 			m_nIconFontSize(nFontSize),
 			m_nIconTitleLines(nTitleLines),
-			m_nShaderSpeed(10),
+			m_nShaderSpeed(5),
 			m_nModifyImage(2),
 			m_clrBkgColor(RGB(0x0a, 0x3b, 0x76)),
 			m_bScrollWheelJumps(false),
@@ -45,6 +45,12 @@ public:
 			m_nCurPageNum(0),
 			m_bFullscreen(true)
 	{
+		TCHAR buf[MAX_PATH + 1];
+		GetModuleFileName(NULL, buf, MAX_PATH);
+		RString s = buf;
+		int n = s.reverse_find(_T('\\'));
+		if (n >= 0)
+			m_strShaderFile = s.substr(0, n) + _T("\\Shader\\ether.frag");
 	}
 
 	void Read(Stream &stream);
