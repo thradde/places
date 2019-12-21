@@ -3528,7 +3528,8 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	// Run App
+	// Run App, we use a dynamically allocated object to track memory leaks
+	// (after app is deleted, there should be no leaks, but there are some in SFML)
 	CMyApp *app = new CMyApp();
 	app->Run();
 	delete app;
