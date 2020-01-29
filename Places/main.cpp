@@ -2133,6 +2133,9 @@ m_Window.setVerticalSyncEnabled(true);
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 	void DeleteIcons(bool with_undo = true)
 	{
+		if (m_bIsDragging)		// do not delete icons which are currently dragged
+			return;
+
 		m_IconManager.CreateSelectedSnapshot();
 
 		CIconUndoGroup *undo_group = nullptr;
@@ -2414,17 +2417,42 @@ m_Window.setVerticalSyncEnabled(true);
 		// hovering above an icon?
 		int mouse_x = m_LastMousePos.x + (int)m_View.getCenter().x - gConfig.m_nWindowWidth / 2;	// m_IconManager.GetCurrentPageNum() * gConfig.m_nWindowWidth;
 		int mouse_y = m_LastMousePos.y;
-#if 0
-		if (m_IconManager.FindIconUnderMouse(mouse_x, mouse_y))
-			SetClassLongPtr(m_Window.getSystemHandle(), GCLP_HCURSOR, reinterpret_cast<LONG_PTR>(m_hCursorHand));
-		else
-			SetClassLongPtr(m_Window.getSystemHandle(), GCLP_HCURSOR, reinterpret_cast<LONG_PTR>(m_hCursorArrow));
-#else
-		if (m_nScrollBy == 0 && (m_IconManager.FindIconUnderMouse(mouse_x, mouse_y) || m_bIsDraggingIcons))
+
+		CIcon *icon = m_IconManager.FindIconUnderMouse(mouse_x, mouse_y);
+
+		if (m_nScrollBy == 0 && (icon || m_bIsDraggingIcons))
 			SetCursor(m_hCursorHand);
 		else
 			SetCursor(m_hCursorArrow);
-#endif
+
+
+		if (icon)
+		{
+			// we found an icon under the mouse
+			// is the icon under the mouse different from the previously hovered icon?
+			if (m_pHoverIcon && icon != m_pHoverIcon)
+			{
+				// yes, set the state of the previously hovered icon back to normal, if its
+				// current state is enStateHover (could have been changed to another state while hovering)
+				if (m_pHoverIcon->GetState() == CIcon::enStateHover)
+					m_IconManager.SetIconState(m_pHoverIcon, CIcon::enStateNormal);
+				m_pHoverIcon = nullptr;
+			}
+
+			if (icon->GetState() == CIcon::enStateNormal)
+			{
+				m_pHoverIcon = icon;
+				m_IconManager.SetIconState(m_pHoverIcon, CIcon::enStateHover);
+			}
+		}
+		else if (m_pHoverIcon)
+		{
+			// yes, set the state of the previously hovered icon back to normal, if its
+			// current state is enStateHover (could have been changed to another state while hovering)
+			if (m_pHoverIcon->GetState() == CIcon::enStateHover)
+				m_IconManager.SetIconState(m_pHoverIcon, CIcon::enStateNormal);
+			m_pHoverIcon = nullptr;
+		}
 	}
 
 
@@ -2829,7 +2857,7 @@ m_Window.setVerticalSyncEnabled(true);
 
 		// hovering above an icon?
 		SetMouseCursor();
-		
+
 		/* else
 		{
 			// Only hovering
@@ -3399,6 +3427,8 @@ m_Window.setVerticalSyncEnabled(true);
 
 		if (m_IconManager.m_bResyncRunning)
 			m_ResyncActivity.Draw(m_Window);
+
+		SetMouseCursor();
 	}
 };
 

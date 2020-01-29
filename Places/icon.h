@@ -119,6 +119,7 @@ public:
 	{
 		enStateNormal,
 		enStateOpen,		// icon is clicked to open a program / link
+		enStateHover,
 		enStateBlowup,
 
 		// for all following states, the title text is drawn inverted

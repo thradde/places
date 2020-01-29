@@ -517,6 +517,11 @@ bool CIcon::SetState(EIconState state, bool scale_now)
 		m_Sprite.setColor(sf::Color(255, 255, 255, 255));
 		break;
 
+	case enStateHover:
+		m_fTargetScale = 1.1f;
+		//m_Sprite.setColor(colorHighlight);
+		break;
+
 	case enStateHighlight:
 		m_fTargetScale = 1.2f;
 		//m_Sprite.setColor(colorHighlight);
