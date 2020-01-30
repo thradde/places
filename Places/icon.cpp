@@ -518,7 +518,7 @@ bool CIcon::SetState(EIconState state, bool scale_now)
 		break;
 
 	case enStateHover:
-		m_fTargetScale = 1.1f;
+		m_fTargetScale = 1.15f;
 		//m_Sprite.setColor(colorHighlight);
 		break;
 

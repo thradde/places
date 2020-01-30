@@ -1804,6 +1804,13 @@ m_Window.setVerticalSyncEnabled(true);
 			{
 				ShowWindow(m_Window.getSystemHandle(), SW_HIDE);
 				SetWindowLongPtr(hWnd, GWL_EXSTYLE, GetWindowLongPtr(hWnd, GWL_EXSTYLE) & ~WS_EX_LAYERED);
+
+				if (m_pHoverIcon)
+				{
+					m_IconManager.SetIconState(m_pHoverIcon, CIcon::enStateNormal, true);
+					m_pHoverIcon = nullptr;
+					m_LastMousePos = { 0, 0 };
+				}
 			}
 			else if (alpha == 1.f)
 				SetWindowLongPtr(hWnd, GWL_EXSTYLE, GetWindowLongPtr(hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);

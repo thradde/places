@@ -287,7 +287,7 @@ public:
 
 	void AddToAnimationList(CIcon *icon);
 	void InitIconMoveAnimation(CIcon *icon, float new_x, float new_y);
-	void SetIconState(CIcon *icon, CIcon::EIconState state);
+	void SetIconState(CIcon *icon, CIcon::EIconState state, bool scale_now = false);
 	void PerformAnimations();
 
 	void ReadFromFile(const RString &file_name);

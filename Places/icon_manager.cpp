@@ -544,9 +544,9 @@ void CIconManager::InitIconMoveAnimation(CIcon *icon, float new_x, float new_y)
 // --------------------------------------------------------------------------------------------------------------------------------------------
 //														CIconManager::SetIconState()
 // --------------------------------------------------------------------------------------------------------------------------------------------
-void CIconManager::SetIconState(CIcon *icon, CIcon::EIconState new_state)
+void CIconManager::SetIconState(CIcon *icon, CIcon::EIconState new_state, bool scale_now)
 {
-	if (icon->SetState(new_state))
+	if (icon->SetState(new_state, scale_now))
 		AddToAnimationList(icon);
 }
 
