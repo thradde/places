@@ -5,6 +5,7 @@
 #include <Windowsx.h>
 #include "shobjidl.h"
 #include "shlguid.h"
+#include <Shlobj.h>
 
 #include "memdebug.h"
 

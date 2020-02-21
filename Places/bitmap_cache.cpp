@@ -3,6 +3,7 @@
 #define NOMINMAX
 #include <Windows.h>
 #include <Windowsx.h>
+#include <Shlobj.h>
 
 #include "memdebug.h"
 

@@ -47,10 +47,11 @@ public:
 	{
 		TCHAR buf[MAX_PATH + 1];
 		GetModuleFileName(NULL, buf, MAX_PATH);
-		RString s = buf;
-		int n = s.reverse_find(_T('\\'));
-		if (n >= 0)
-			m_strShaderFile = s.substr(0, n) + _T("\\Shader\\ether.frag");
+		RString module_name = buf;
+		module_name = ExtractFileName(module_name);
+		SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
+		RString path = buf;
+		m_strShaderFile = path + _T("\\") + module_name + _T("\\Shader\\ether.frag");
 	}
 
 	void Read(Stream &stream);

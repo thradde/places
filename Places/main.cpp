@@ -758,6 +758,9 @@ LRESULT CALLBACK DlgSettings(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lPara
 		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("Middle Mouse Button"));
 		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("Extra Button 1"));
 		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("Extra Button 2"));
+		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("Extra Button 3"));
+		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("Extra Button 4"));
+		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("Extra Button 5"));
 		SendMessage(hWndComboBox, CB_SETCURSEL, gnMouseButton, 0);
 
 		SendMessage(GetDlgItem(hWndDlg, ID_MOUSE_CORNER), BM_SETCHECK, gnMouseCorner ? BST_CHECKED : BST_UNCHECKED, 0);
