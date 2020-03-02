@@ -539,6 +539,8 @@ bool PickColorDialog(HWND hwndParent, COLORREF &color)
 //															HotKey Control Subclass
 // --------------------------------------------------------------------------------------------------------------------------------------------
 WNDPROC wpOrigEditProc;
+WNDPROC wpOrigCmbProc;
+WNDPROC wpOrigDropDownProc;
 
 // instance data of hotkey control (so we can have multiple hotkey controls in the same dialog)
 class CHotkeyData
@@ -737,6 +739,58 @@ LRESULT APIENTRY EditHotkeyProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 }
 
 
+// Combobox Drop Down List Subclass procedure
+LRESULT APIENTRY CmbDropDownProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_XBUTTONUP:
+		{
+			WORD btn = HIWORD(wParam);
+			if (btn <= 5)
+			{
+				SendMessage(hwnd, LB_SETCURSEL, btn + 1, 0);
+				PostMessage(hwnd, WM_KEYDOWN, VK_ESCAPE, 1);
+			}
+
+			return 0;
+		}
+		break;
+
+	case WM_MBUTTONUP:
+		SendMessage(hwnd, LB_SETCURSEL, 1, 0);
+		PostMessage(hwnd, WM_KEYDOWN, VK_ESCAPE, 1);
+		break;
+	}
+
+	return CallWindowProc(wpOrigDropDownProc, hwnd, uMsg, wParam, lParam);
+}
+
+
+// Combobox Mouse Button Subclass procedure
+LRESULT APIENTRY CmbMouseBtnProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_XBUTTONUP:
+		{
+			WORD btn = HIWORD(wParam);
+			if (btn <= 5)
+				SendMessage(hwnd, CB_SETCURSEL, btn + 1, 0);
+
+			return 0;
+		}
+		break;
+
+	case WM_MBUTTONUP:
+		SendMessage(hwnd, CB_SETCURSEL, 1, 0);
+		break;
+	}
+
+	return CallWindowProc(wpOrigCmbProc, hwnd, uMsg, wParam, lParam);
+}
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------
 //															DlgProcSettings()
 // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -752,6 +806,16 @@ LRESULT CALLBACK DlgSettings(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lPara
 		// Subclass the edit control
 		wpOrigEditProc = (WNDPROC)SetWindowLongPtr(GetDlgItem(hWndDlg, ID_HOTKEY), GWLP_WNDPROC, (LONG_PTR)EditHotkeyProc);
 		SendMessage(GetDlgItem(hWndDlg, ID_HOTKEY), WM_MY_SETKEYS, gbHotkeyModifiers, gbHotkeyVKey);
+
+		// Subclass the Mouse Button Combobox
+		wpOrigCmbProc = (WNDPROC)SetWindowLongPtr(GetDlgItem(hWndDlg, ID_MOUSE_BUTTON), GWLP_WNDPROC, (LONG_PTR)CmbMouseBtnProc);
+
+		// Subclass the drop down list of the Mouse Button Combobox
+		COMBOBOXINFO cbi;
+		cbi.cbSize = sizeof(COMBOBOXINFO);
+		GetComboBoxInfo(GetDlgItem(hWndDlg, ID_MOUSE_BUTTON), &cbi);
+		wpOrigDropDownProc = (WNDPROC)SetWindowLongPtr(cbi.hwndList, GWLP_WNDPROC, (LONG_PTR)CmbDropDownProc);
+
 
 		hWndComboBox = GetDlgItem(hWndDlg, ID_MOUSE_BUTTON);
 		SendMessage(hWndComboBox, CB_ADDSTRING, 0, (LPARAM)_T("None"));
