@@ -14,6 +14,8 @@
 #include <float.h>
 #include <assert.h>
 #include <string.h>
+
+#include "memdebug.h"
 #include "resampler.h"
 
 #define resampler_assert assert

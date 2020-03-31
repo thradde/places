@@ -9,6 +9,10 @@ class CIconManager;
 class CUndoAction
 {
 public:
+	virtual ~CUndoAction()
+	{
+	}
+
 	// if an undo action requires multiple passes (e.g. the Move Action), derived classes can overload this method
 	virtual int	 GetRequiredPasses() const { return 1; }
 

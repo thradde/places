@@ -41,6 +41,8 @@
 
 #include <string.h>
 
+#include "memdebug.h"
+
 #include "md5.h"
 
 /*
