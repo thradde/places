@@ -100,8 +100,8 @@ public:
 
 	~CPopupMenu()
 	{
-		_foreach(it, m_arMenuItems)
-			delete (*it);
+		for (auto it : m_arMenuItems)
+			delete it;
 	}
 
 	const RString	&GetSelectedMenu() const { return m_strSelectedMenu; }

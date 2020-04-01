@@ -71,8 +71,8 @@ public:
 
 	virtual ~CIconUndoGroup()
 	{
-		_foreach(it, m_listIconActions)
-			delete *it;
+		for (auto it : m_listIconActions)
+			delete it;
 	}
 
 	virtual void Add(CIconAction *action)
@@ -91,20 +91,20 @@ public:
 
 	void PerformUndo(CIconManager &icon_manager, int pass) override
 	{
-		_foreach(it, m_listIconActions)
-			(*it)->PerformUndo(icon_manager, pass);
+		for (auto it : m_listIconActions)
+			it->PerformUndo(icon_manager, pass);
 	}
 
 	void PerformRedo(CIconManager &icon_manager, int pass) override
 	{
-		_foreach(it, m_listIconActions)
-			(*it)->PerformRedo(icon_manager, pass);
+		for (auto it : m_listIconActions)
+			it->PerformRedo(icon_manager, pass);
 	}
 
 	void Release(CIconManager &icon_manager, bool is_undo_action) override
 	{
-		_foreach(it, m_listIconActions)
-			(*it)->Release(icon_manager, is_undo_action);
+		for (auto it : m_listIconActions)
+			it->Release(icon_manager, is_undo_action);
 	}
 };
 
@@ -218,11 +218,11 @@ public:
 	// Clear() has a parameter CIconManager&, which can not be provided to the destructor here.
 	~CUndoStack()
 	{
-		_foreach(it, m_listUndoActions)
-			delete *it;
+		for (auto it : m_listUndoActions)
+			delete it;
 
-		_foreach(it, m_listRedoActions)
-			delete *it;
+		for (auto it : m_listRedoActions)
+			delete it;
 	}
 
 	void PushUndoAction(CIconManager &icon_manager, CUndoAction *action)
@@ -230,10 +230,10 @@ public:
 		m_listUndoActions.push_back(action);
 
 		// when a new undo action is pushed onto the stack, the redo-stack is invalidated
-		_foreach(it, m_listRedoActions)
+		for (auto it : m_listRedoActions)
 		{
-			(*it)->Release(icon_manager, false);
-			delete *it;
+			it->Release(icon_manager, false);
+			delete it;
 		}
 		m_listRedoActions.clear();
 	}
@@ -287,17 +287,17 @@ public:
 	void Clear(CIconManager &icon_manager)
 	{
 		// clear undo stack, so unused bitmaps are de-referenced and not written to file
-		_foreach(it, m_listUndoActions)
+		for (auto it : m_listUndoActions)
 		{
-			(*it)->Release(icon_manager, true);
-			delete *it;
+			it->Release(icon_manager, true);
+			delete it;
 		}
 		m_listUndoActions.clear();
 
-		_foreach(it, m_listRedoActions)
+		for (auto it : m_listRedoActions)
 		{
-			(*it)->Release(icon_manager, false);
-			delete *it;
+			it->Release(icon_manager, false);
+			delete it;
 		}
 		m_listRedoActions.clear();
 	}

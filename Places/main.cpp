@@ -1552,6 +1552,7 @@ public:
 	~CMyApp()
 	{
 		// ReleaseHooks();
+		DeInitIconShader();
 	}
 
 
@@ -2217,11 +2218,11 @@ m_Window.setVerticalSyncEnabled(true);
 		if (with_undo)
 			undo_group = new CIconUndoGroup();
 
-		_foreach(it, m_IconManager.GetSelectedIcons())
+		for (auto it : m_IconManager.GetSelectedIcons())
 		{
 			if (with_undo)
-				undo_group->Add(new CIconDeleteAction(*it));
-			m_IconManager.UnlinkIcon(*it);
+				undo_group->Add(new CIconDeleteAction(it));
+			m_IconManager.UnlinkIcon(it);
 		}
 
 		if (with_undo)

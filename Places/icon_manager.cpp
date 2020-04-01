@@ -295,12 +295,12 @@ void CIconManager::DrawUnlinkedIcons(sf::RenderWindow &window, sf::Text &text, i
 {
 	//window.pushGLStates();
 
-	_foreach(it, m_listSelectedIcons)
+	for (auto it : m_listSelectedIcons)
 	{
-		if ((*it)->GetIsUnlinked() && (*it)->IsVisible(view_left, view_right))
+		if (it->GetIsUnlinked() && it->IsVisible(view_left, view_right))
 		{
-			(*it)->Draw(window);
-			(*it)->DrawTitle(window, text);
+			it->Draw(window);
+			it->DrawTitle(window, text);
 		}
 	}
 
@@ -315,14 +315,14 @@ void CIconManager::DrawUnlinkedIcons(sf::RenderWindow &window, sf::Text &text, i
 // --------------------------------------------------------------------------------------------------------------------------------------------
 void CIconManager::DrawAnimatedIcons(int start_page, int end_page, sf::RenderWindow &window, sf::Text &text, int view_left, int view_right)
 {
-	_foreach(it, m_listAnimatedIcons)
+	for (auto it : m_listAnimatedIcons)
 	{
-		if ((*it)->GetPosition().m_nPage < start_page || (*it)->GetPosition().m_nPage >= end_page)
+		if (it->GetPosition().m_nPage < start_page || it->GetPosition().m_nPage >= end_page)
 		{
-			if ((*it)->IsVisible(view_left, view_right))
+			if (it->IsVisible(view_left, view_right))
 			{
-				(*it)->Draw(window);
-				(*it)->DrawTitle(window, text);
+				it->Draw(window);
+				it->DrawTitle(window, text);
 			}
 		}
 	}
@@ -358,7 +358,7 @@ TIconPagesIter CIconManager::FindIconPage(const CIcon *icon)
 {
 	bool bFail;
 
-	_foreach(it, m_IconPages)
+	for (auto it = m_IconPages.begin(); it != m_IconPages.end(); it++)
 	{
 		it->Find(icon, bFail);
 		if (!bFail)
@@ -380,7 +380,7 @@ TIconPagesIter CIconManager::FindIconPage(const CIcon *icon)
 void CIconManager::StartLassoMode(bool do_select)
 {
 	//	deselect all icons on all other pages
-	_foreach(it, m_IconPages)
+	for (auto it = m_IconPages.begin(); it != m_IconPages.end(); it++)
 	{
 		if (it != m_itCurPage)
 			it->SelectAll(*this, false);
@@ -457,13 +457,13 @@ void CIconManager::PlaceSelectedIcons()
 	// if no icon changed the position, do not create an undo action
 	bool has_changed_pos = false;
 
-	_foreach(it, m_listSelectedIcons)
+	for (auto it : m_listSelectedIcons)
 	{
-		icon_pos = (*it)->GetSpritePosition();
+		icon_pos = it->GetSpritePosition();
 		int x = (int)icon_pos.x;
 		int y = (int)icon_pos.y;
 		CIconPos new_pos(ComputeRasterPos(x, y), m_nCurPageNum);
-		if (new_pos != (*it)->GetBackupPosition() && IsValidPos(x, y))
+		if (new_pos != it->GetBackupPosition() && IsValidPos(x, y))
 		{
 			has_changed_pos = true;
 			break;
@@ -474,10 +474,10 @@ void CIconManager::PlaceSelectedIcons()
 	{
 		// the icons have not changed their raster position, just place them without an undo-action:
 		CIconPos backup_pos;
-		_foreach(it, m_listSelectedIcons)
+		for (auto it : m_listSelectedIcons)
 		{
-			backup_pos = (*it)->GetBackupPosition();
-			PlaceIcon(*it, backup_pos);
+			backup_pos = it->GetBackupPosition();
+			PlaceIcon(it, backup_pos);
 		}
 
 		return;
@@ -488,25 +488,25 @@ void CIconManager::PlaceSelectedIcons()
 	CIconUndoGroup *undo_group = new CIconUndoGroup();
 
 	// try to place icons at new position
-	_foreach(it, m_listSelectedIcons)
+	for (auto it : m_listSelectedIcons)
 	{
-		undo_group->Add(new CIconMoveAction(*it, (*it)->GetBackupPosition()));
+		undo_group->Add(new CIconMoveAction(it, it->GetBackupPosition()));
 
-		icon_pos = (*it)->GetSpritePosition();
+		icon_pos = it->GetSpritePosition();
 
-		if (!PlaceIconOnCurrentPage(*it, (int)icon_pos.x, (int)icon_pos.y))
+		if (!PlaceIconOnCurrentPage(it, (int)icon_pos.x, (int)icon_pos.y))
 		{
 			// The new position is occupied by another icon, move ALL icons back to original position.
 			// Unfortunately it is required for logical correctness to move ALL icons back, because
 			// the original position of a moved-back icon might be occupied by another moved icon otherwise.
 			int current_page = GetCurrentPageNum();
 			CIconPos backup_pos;
-			_foreach(it_moveback, m_listSelectedIcons)
+			for (auto it_moveback : m_listSelectedIcons)
 			{
-				if (!(*it_moveback)->GetIsUnlinked())
-					UnlinkIcon(*it_moveback);
-				backup_pos = (*it_moveback)->GetBackupPosition();
-				PlaceIcon(*it_moveback, backup_pos);
+				if (!it_moveback->GetIsUnlinked())
+					UnlinkIcon(it_moveback);
+				backup_pos = (it_moveback)->GetBackupPosition();
+				PlaceIcon(it_moveback, backup_pos);
 			}
 
 			delete undo_group;	// this is not used now
@@ -669,6 +669,6 @@ void CIconManager::WriteToFile(const RString &file_name) const
 	// Write icon pages
 	stream.SetExtra((void *)&m_BitmapCache);
 	stream.WriteUInt((unsigned int)m_IconPages.size());
-	_foreach(it, m_IconPages)
+	for (auto it = m_IconPages.begin(); it != m_IconPages.end(); it++)
 		it->Write(stream);
 }

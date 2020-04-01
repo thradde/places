@@ -597,8 +597,8 @@ CBitmapCache::CBitmapCache()
 // --------------------------------------------------------------------------------------------------------------------------------------------
 CBitmapCache::~CBitmapCache()
 {
-	_foreach(it, m_setCache)
-		delete *it;				// this also deletes the gpNotFoundItem
+	for (auto it : m_setCache)
+		delete it;				// this also deletes the gpNotFoundItem
 }
 
 
@@ -720,9 +720,9 @@ void CBitmapCache::Write(Stream &stream) const
 {
 	// compute number of items - unreferenced items and the gpNotFoundItem are not counted
 	unsigned int nCacheItems = 0;
-	_foreach(it, m_setCache)
+	for (auto it : m_setCache)
 	{
-		if ((*it)->GetRefCount() > 0 && (*it)->IsDeletable())
+		if (it->GetRefCount() > 0 && it->IsDeletable())
 			nCacheItems++;
 	}
 
@@ -730,9 +730,9 @@ void CBitmapCache::Write(Stream &stream) const
 	stream.WriteUInt(nCacheItems);
 
 	// write items
-	_foreach(it, m_setCache)
+	for (auto it : m_setCache)
 	{
-		if ((*it)->GetRefCount() > 0 && (*it)->IsDeletable())
-			(*it)->Write(stream);
+		if (it->GetRefCount() > 0 && it->IsDeletable())
+			it->Write(stream);
 	}
 }

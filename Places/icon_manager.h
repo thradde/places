@@ -123,7 +123,7 @@ public:
 	void RecomputeAllIcons()
 	{
 		int page = 0;
-		_foreach(it_page, m_IconPages)
+		for (auto it_page = m_IconPages.begin(); it_page != m_IconPages.end(); it_page++)
 			it_page->RecomputeAllIcons(gConfig.m_nIconSizeX, page++, m_nHorizontalMargin, m_nVerticalMargin, m_nIconRasterX, m_nIconRasterY);
 	}
 
@@ -155,10 +155,10 @@ public:
 	void DeSelectAllOnOtherPages()
 	{
 		// deleselect all selected icons, which are not on the current page
-		_foreach(it, m_listSelectedIcons)
+		for (auto it : m_listSelectedIcons)
 		{
-			if ((*it)->GetPosition().m_nPage != m_nCurPageNum)
-				SetIconState(*it, CIcon::enStateNormal);
+			if (it->GetPosition().m_nPage != m_nCurPageNum)
+				SetIconState(it, CIcon::enStateNormal);
 		}
 		
 		// re-create the selected snapshot
@@ -177,8 +177,8 @@ public:
 		m_itCurPage->CreateSelectedSnapshot(m_listSelectedIcons);
 
 		// backup position of each icon
-		_foreach(it, m_listSelectedIcons)
-			(*it)->DoBackupPosition();
+		for (auto it : m_listSelectedIcons)
+			it->DoBackupPosition();
 	}
 
 	TListIcons &GetSelectedIcons()
@@ -188,14 +188,14 @@ public:
 
 	void SetSelectedIconsState(CIcon::EIconState state)
 	{
-		_foreach(it, m_listSelectedIcons)
-			SetIconState(*it, state);
+		for (auto it : m_listSelectedIcons)
+			SetIconState(it, state);
 	}
 
 	void UnlinkSelectedIcons()
 	{
-		_foreach(it, m_listSelectedIcons)
-			UnlinkIcon(*it);
+		for (auto it : m_listSelectedIcons)
+			UnlinkIcon(it);
 	}
 
 	// Settles all selected icons in their current positions, if possible.
@@ -204,8 +204,8 @@ public:
 
 	void MoveSelectedIcons(float dx, float dy)
 	{
-		_foreach(it, m_listSelectedIcons)
-			(*it)->Move(dx, dy);
+		for (auto it : m_listSelectedIcons)
+			it->Move(dx, dy);
 	}
 
 	bool HasSelectedIcons() const
@@ -216,8 +216,8 @@ public:
 
 	void ClearSelectedSnapshot()
 	{
-		_foreach(it, m_listSelectedIcons)
-			SetIconState(*it, CIcon::enStateNormal);
+		for (auto it : m_listSelectedIcons)
+			SetIconState(it, CIcon::enStateNormal);
 		m_listSelectedIcons.clear();
 	}
 
@@ -261,7 +261,7 @@ public:
 	// would fall outside the new layout
 	bool CanChangeLayout(const CSettings &new_layout) const
 	{
-		_foreach(it, m_IconPages)
+		for (auto it = m_IconPages.begin(); it != m_IconPages.end(); it++)
 		{
 			if (!it->CanChangeLayout(new_layout))
 				return false;
@@ -272,7 +272,7 @@ public:
 
 	void ChangeLayout(const CSettings &new_layout)
 	{
-		_foreach(it, m_IconPages)
+		for (auto it = m_IconPages.begin(); it != m_IconPages.end(); it++)
 			it->ChangeLayout(new_layout);
 
 		RecomputeAllIcons();
@@ -281,7 +281,7 @@ public:
 
 	void RenderTitles()
 	{
-		_foreach(it, m_IconPages)
+		for (auto it = m_IconPages.begin(); it != m_IconPages.end(); it++)
 			it->RenderTitles();
 	}
 

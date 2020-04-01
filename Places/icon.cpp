@@ -132,6 +132,13 @@ void InitIconShader()
 }
 
 
+void DeInitIconShader()
+{
+	if (_pShader)
+		delete _pShader;
+}
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------
 //															CIcon::RenderTitleTextLayout()
 // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -473,11 +480,11 @@ void CIcon::DrawTitle(sf::RenderWindow &window, sf::Text &text)
 	}
 
 	y = org_y;*/
-	_foreach(it, m_Title.m_arTextLines)
+	for (auto it : m_Title.m_arTextLines)
 	{
-		text.setString(it->m_strText.c_str());
+		text.setString(it.m_strText.c_str());
 #if 1
-		float x = floor(rc.left - m_MovedBy.x + it->m_nOffset + 0.5f);
+		float x = floor(rc.left - m_MovedBy.x + it.m_nOffset + 0.5f);
 #else
 		float x = floor(pos.x - it->m_nOffset + 0.5f);
 #endif
