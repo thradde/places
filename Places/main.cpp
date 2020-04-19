@@ -3257,17 +3257,19 @@ m_Window.setVerticalSyncEnabled(true);
 				if (icon->m_fTargetScale == icon->m_Sprite.getScale().x)
 				{
 					m_bHideWithDelay = false;
-					m_IconManager.SetIconState(icon, CIcon::enStateNormal);
+					m_IconManager.SetIconState(icon, CIcon::enStateNormal, true);
 					HideMainWindow();
 					OpenLocation();
 				}
 			}
+#if 0	// I don't understand why I inserted this code
 			else
 			{
 				m_bHideWithDelay = false;
 				HideMainWindow();
 				OpenLocation();
 			}
+#endif
 		}
 
 		if (m_enFade == enFmFadeIn)
