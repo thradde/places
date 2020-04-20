@@ -8,7 +8,7 @@
 #include "resource.h"
 
 
-WAVE_CLICK WAVE 192281__lebcraftlp__click.wav
+WAVE_CLICK WAVE click.wav
 
 
 //
