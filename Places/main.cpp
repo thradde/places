@@ -1911,6 +1911,13 @@ m_Window.setVerticalSyncEnabled(true);
 
 		ShowWindow(m_Window.getSystemHandle(), SW_SHOW);
 		SetForegroundWindowInternal(m_Window.getSystemHandle());
+
+		// synthesize MouseMove event, so mouse cursor is set correctly
+		sf::Event event;
+		sf::Vector2i pos = sf::Mouse::getPosition(m_Window);
+		event.mouseMove.x = pos.x;
+		event.mouseMove.y = pos.y;
+		OnMouseMove(event);
 		CheckNagScreen();
 	}
 
@@ -2496,6 +2503,16 @@ m_Window.setVerticalSyncEnabled(true);
 
 		CIcon *icon = m_IconManager.FindIconUnderMouse(mouse_x, mouse_y);
 
+		/*	This code does not work, when the window is made visible, because SMFL processes WM_SETCURSOR and sets the cursor to ARROW.
+
+			With SMFL v2.5 we can do the following:
+
+			sf::Cursor cursor;
+			if (m_nScrollBy == 0 && (icon || m_bIsDraggingIcons))
+				cursor.loadFromSystem(sf::Cursor::Hand);
+			else
+				cursor.loadFromSystem(sf::Cursor::Arrow);
+			m_Window.setMouseCursor(cursor); */
 		if (m_nScrollBy == 0 && (icon || m_bIsDraggingIcons))
 			SetCursor(m_hCursorHand);
 		else
@@ -3257,6 +3274,15 @@ m_Window.setVerticalSyncEnabled(true);
 				if (icon->m_fTargetScale == icon->m_Sprite.getScale().x)
 				{
 					m_bHideWithDelay = false;
+					m_IconManager.SetIconState(icon, CIcon::enStateNormal);
+
+					// animate shrinking icon
+					for (int i = 0; i < 16; i++)
+					{
+						Draw();
+						Sleep(10);
+						m_Window.display();
+					}
 					m_IconManager.SetIconState(icon, CIcon::enStateNormal, true);
 					HideMainWindow();
 					OpenLocation();
