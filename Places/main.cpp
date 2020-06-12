@@ -3614,12 +3614,12 @@ BOOL CALLBACK WindowSearcher(HWND hWnd, LPARAM lParam)
 // --------------------------------------------------------------------------------------------------------------------------------------------
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	/* test for breaking titles at word boundaries
-	const wchar_t c = L'\u042f'; // cyrillic capital letter ya
-
-	int is = _istalpha(c);
-	is = _istalpha(L'0');
-	*/
+#ifdef _DEBUG
+		// activate memory heap checking at program exit
+		int tmp = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);		// get current flags
+	tmp |= _CRTDBG_LEAK_CHECK_DF;
+	_CrtSetDbgFlag(tmp);
+#endif
 
 	// Create a mutex with a unique name, so Inno Setup can terminate the program before update / reinstall / uninstall
 	CreateMutex(NULL, FALSE, _T("IS$$Mutex$$") APP_NAME);
@@ -3662,21 +3662,14 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	// Run App, we use a dynamically allocated object to track memory leaks
-	// (after app is deleted, there should be no leaks, but there are some in SFML)
-	CMyApp *app = new CMyApp();
-	app->Run();
-	delete app;
+	CMyApp app;
+	app.Run();
 
 	// cleanup
 	gConfig.Free();
 
 	// Uninitialize the COM Library
 	CoUninitialize();
-
-#ifdef _DEBUG
-//	_CrtDumpMemoryLeaks();
-#endif
 
 	return 0;
 }
