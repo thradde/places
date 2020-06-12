@@ -3615,10 +3615,8 @@ BOOL CALLBACK WindowSearcher(HWND hWnd, LPARAM lParam)
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 #ifdef _DEBUG
-		// activate memory heap checking at program exit
-		int tmp = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);		// get current flags
-	tmp |= _CRTDBG_LEAK_CHECK_DF;
-	_CrtSetDbgFlag(tmp);
+	// activate memory heap checking at program exit
+	_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
 	// Create a mutex with a unique name, so Inno Setup can terminate the program before update / reinstall / uninstall
@@ -3657,10 +3655,6 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	// init COM
 	CoInitializeEx(NULL, COINIT_MULTITHREADED  | COINIT_DISABLE_OLE1DDE); // COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-
-#ifdef _DEBUG
-	_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
-#endif
 
 	CMyApp app;
 	app.Run();
