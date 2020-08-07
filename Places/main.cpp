@@ -1433,6 +1433,9 @@ public:				// need access by external thread function to avoid delays when calli
 
 	HCURSOR			m_hCursorArrow;
 	HCURSOR			m_hCursorHand;
+	HCURSOR			m_hCursorSelectAdd;
+	HCURSOR			m_hCursorSelectSub;
+	HCURSOR			m_hCursorAddSub;
 
 	bool			m_bDrawActivityOnly;		// during layout-change and icon re-scaling, only the background and the Activity Indicator are drawn
 	HANDLE			m_hActivityThread;
@@ -1490,6 +1493,9 @@ public:
 
 		m_hCursorArrow = LoadCursor(NULL, IDC_ARROW);
 		m_hCursorHand = LoadCursor(NULL, IDC_HAND);
+		m_hCursorSelectAdd = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_SELECT_ADD));
+		m_hCursorSelectSub = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_SELECT_SUB));
+		m_hCursorAddSub = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_ADD_SUB));
 
 		RunHookThread();
 		//if (!SetHooks())
@@ -2513,11 +2519,24 @@ m_Window.setVerticalSyncEnabled(true);
 			else
 				cursor.loadFromSystem(sf::Cursor::Arrow);
 			m_Window.setMouseCursor(cursor); */
-		if (m_nScrollBy == 0 && (icon || m_bIsDraggingIcons))
+		if (m_enLassoMode == enLassoModeSelect)
+			SetCursor(m_hCursorSelectAdd);
+		else if (m_enLassoMode == enLassoModeDeselect)
+			SetCursor(m_hCursorSelectSub);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) || sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt))
+		{
+			// alt-key = Lasso
+			if (ControlKeyPressed())
+				SetCursor(m_hCursorSelectSub);	// alt + ctrl = Lasso in de-selection mode
+			else
+				SetCursor(m_hCursorSelectAdd);
+		}
+		else if (ControlKeyPressed())
+			SetCursor(m_hCursorAddSub);
+		else if (m_nScrollBy == 0 && (icon || m_bIsDraggingIcons))
 			SetCursor(m_hCursorHand);
 		else
 			SetCursor(m_hCursorArrow);
-
 
 		if (icon)
 		{
@@ -2586,12 +2605,13 @@ m_Window.setVerticalSyncEnabled(true);
 				}
 				else
 				{
+					/* too complicated to use
 					if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)))
 					{
 						// not alt + shift: clear current selection
 						m_IconManager.ClearSelectedSnapshot();
 						m_IconManager.SelectAll(false);
-					}
+					}*/
 
 					m_enLassoMode = enLassoModeSelect;
 				}

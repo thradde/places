@@ -64,8 +64,7 @@
     - left-click onto selected icon(s) and drag the mouse: move selected icon(s)
     
     Lasso
-    - alt + left-click: start lasso mode (all selected icons are deselected)
-    - shift + alt + left-click: start lasso mode (additive, all selected icons stay selected)
+    - alt + left-click: start lasso mode
     - ctrl + alt + left-click: start lasso mode (subtractive, covered selected icons are deselected)
     
     Scrolling
@@ -75,7 +74,8 @@
     Other operations
     - right-click onto free space for global actions
     - left-click onto a page indicator (the white circles at the bottom) to jump to a selected page
-    - left-click into free space to hide Places
+    - left-click to remove all selections from icons
+    - left-click into free space to hide Places (if no icons are selected)
 
     
     Global Actions Menu (right-click into free space):

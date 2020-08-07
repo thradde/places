@@ -10,6 +10,9 @@
 
 WAVE_CLICK WAVE click.wav
 
+ARROW_SELECT_ADD	CURSOR	"arrow select add.cur"
+ARROW_SELECT_SUB	CURSOR	"arrow select sub.cur"
+ARROW_ADD_SUB		CURSOR	"arrow add sub.cur"
 
 //
 // Menu resources
