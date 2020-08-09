@@ -1433,9 +1433,12 @@ public:				// need access by external thread function to avoid delays when calli
 
 	HCURSOR			m_hCursorArrow;
 	HCURSOR			m_hCursorHand;
-	HCURSOR			m_hCursorSelectAdd;
-	HCURSOR			m_hCursorSelectSub;
-	HCURSOR			m_hCursorAddSub;
+	HCURSOR			m_hCursorArrowSelectAdd;
+	HCURSOR			m_hCursorArrowSelectSub;
+	HCURSOR			m_hCursorArrowAddSub;
+	HCURSOR			m_hCursorHandSelectAdd;
+	HCURSOR			m_hCursorHandSelectSub;
+	HCURSOR			m_hCursorHandAddSub;
 
 	bool			m_bDrawActivityOnly;		// during layout-change and icon re-scaling, only the background and the Activity Indicator are drawn
 	HANDLE			m_hActivityThread;
@@ -1493,9 +1496,12 @@ public:
 
 		m_hCursorArrow = LoadCursor(NULL, IDC_ARROW);
 		m_hCursorHand = LoadCursor(NULL, IDC_HAND);
-		m_hCursorSelectAdd = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_SELECT_ADD));
-		m_hCursorSelectSub = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_SELECT_SUB));
-		m_hCursorAddSub = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_ADD_SUB));
+		m_hCursorArrowSelectAdd = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_SELECT_ADD));
+		m_hCursorArrowSelectSub = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_SELECT_SUB));
+		m_hCursorArrowAddSub = LoadCursor(ghInstance, MAKEINTRESOURCE(ARROW_ADD_SUB));
+		m_hCursorHandSelectAdd = LoadCursor(ghInstance, MAKEINTRESOURCE(HAND_SELECT_ADD));
+		m_hCursorHandSelectSub = LoadCursor(ghInstance, MAKEINTRESOURCE(HAND_SELECT_SUB));
+		m_hCursorHandAddSub = LoadCursor(ghInstance, MAKEINTRESOURCE(HAND_ADD_SUB));
 
 		RunHookThread();
 		//if (!SetHooks())
@@ -2520,19 +2526,19 @@ m_Window.setVerticalSyncEnabled(true);
 				cursor.loadFromSystem(sf::Cursor::Arrow);
 			m_Window.setMouseCursor(cursor); */
 		if (m_enLassoMode == enLassoModeSelect)
-			SetCursor(m_hCursorSelectAdd);
+			SetCursor(icon ? m_hCursorHandSelectAdd : m_hCursorArrowSelectAdd);
 		else if (m_enLassoMode == enLassoModeDeselect)
-			SetCursor(m_hCursorSelectSub);
+			SetCursor(icon ? m_hCursorHandSelectSub : m_hCursorArrowSelectSub);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) || sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt))
 		{
 			// alt-key = Lasso
 			if (ControlKeyPressed())
-				SetCursor(m_hCursorSelectSub);	// alt + ctrl = Lasso in de-selection mode
+				SetCursor(icon ? m_hCursorHandSelectSub : m_hCursorArrowSelectSub);	// alt + ctrl = Lasso in de-selection mode
 			else
-				SetCursor(m_hCursorSelectAdd);
+				SetCursor(icon ? m_hCursorHandSelectAdd : m_hCursorArrowSelectAdd);
 		}
 		else if (ControlKeyPressed())
-			SetCursor(m_hCursorAddSub);
+			SetCursor(icon ? m_hCursorHandAddSub : m_hCursorArrowAddSub);
 		else if (m_nScrollBy == 0 && (icon || m_bIsDraggingIcons))
 			SetCursor(m_hCursorHand);
 		else

@@ -6,6 +6,9 @@
 #define ARROW_SELECT_ADD                        5
 #define ARROW_SELECT_SUB                        6
 #define ARROW_ADD_SUB                           7
+#define HAND_SELECT_ADD                         8
+#define HAND_SELECT_SUB                         9
+#define HAND_ADD_SUB                            10
 #define IDR_TRAY_MENU                           105
 #define IDD_SETTINGS                            107
 #define IDD_ICON_PROPERTIES                     108
