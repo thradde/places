@@ -138,4 +138,12 @@ void CIconPropertiesAction::PerformUndo(CIconManager &icon_manager, int pass)
 		m_pIcon->m_strParameters = m_strOldParameters;
 		m_strOldParameters = tmp;	// for inverted redo action
 	}
+
+	// open as admin
+	bool b = m_pIcon->m_bOpenAsAdmin;
+	if (b != m_bOldOpenAsAdmin)
+	{
+		m_pIcon->m_bOpenAsAdmin = m_bOldOpenAsAdmin;
+		m_bOldOpenAsAdmin = b;
+	}
 }

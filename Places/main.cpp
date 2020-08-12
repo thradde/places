@@ -1,52 +1,3 @@
-/*
-I would like to suggest some Midi plugins, which are available in Ableton Live.
-
-1) Scaler
-Basically the same like Cales, but it maps every incoming note to the given scale (e.g. pentatonic scale). If a note comes in, 
-which does not belong to the scale, it is mapped to the nearest allowed note. It would be an additional mode (beside Easy Mode) 
-in Cales, for example named "Nearest Mode" or so.
-Eingebauter Randomizer: Mit einer einstellbaren Wahrscheinlichkeit von 0 - 100% und einem vorgegebenen unterem und oberen 
-Oktavbereich - und einer Tonart - wird eine eingehende Note in eine zufällige Note gewandelt.
-Es sollte möglich sein, die Wahrscheinlichkeitsverteilung zu beeinflussen, also eine Art verschiebbare Gaussche Glocke.
-
-2) Random Note length
-For incoming notes, your software makes a random decision, how long the note shall be, and filters the incoming Note Off event. 
-Instead, it sends its own Note Off event. The note length should be adjustable in range, according to BPM, from 1/64th to 128 bars.
-Since this might cause too many active notes - which might send note off events for old notes that also kill a newer identical 
-note - the max. number of active notes should be adjustable between 1 and 64, so that your code sends a note off if the 
-max. number is reached. Default would be 8.
-Es sollte möglich sein, die Wahrscheinlichkeitsverteilung zu beeinflussen, also eine Art verschiebbare Gaussche Glocke.
-
-
-#include <cstdlib>
-#include <cmath>
-#include <limits>
-double generateGaussianNoise(double mean, double sigma)
-{
-const double epsilon = std::numeric_limits<double>::min();
-const double two_pi = 2.0*3.14159265358979323846;
-
-static double z0, z1;
-static bool generate;
-generate = !generate;
-
-if (!generate)
-return z1 * sigma + mean;
-
-double u1, u2;
-do
-{
-u1 = rand() * (1.0 / RAND_MAX);
-u2 = rand() * (1.0 / RAND_MAX);
-}
-while ( u1 <= epsilon );
-
-z0 = sqrt(-2.0 * log(u1)) * cos(two_pi * u2);
-z1 = sqrt(-2.0 * log(u1)) * sin(two_pi * u2);
-return mean + z0 * sigma;
-}
-*/
-
 
 // BUGS:
 // -----
@@ -126,67 +77,6 @@ unsigned __stdcall ShellExecuteThread(void *param);
 
 /*
 TODO:
-- INSTALLER
-	testen: Default Icons rein
-
-
-TESTEN
-	- Auf meinem Laptop
-	- An meinem Touch-Screen oben
-	- Auf Vaters Laptop
-	- Auf Gottfrieds Rechner
-
-
-NÄCHSTE VERSION:
-- todo: Änderung der Bildschirmauflösung: Places + QSwitch: Fenster müssen neu erzeugt werden, weil Fonts und auch manche Icons total danebenhängen!
-- todo: tabbed settings dialog, numerische felder mit spin-buttons
-- todo: Layout-change: min / max Grenzen für cols/rows müssen bei lost-fokus eines edit controls direkt korrigiert eingesetzt werden
-- Einstellen und Ändern der Spalten / Zeilen
-		==> ggf. überschüssige Icons werden optional (Bestätigungsdialog) auf leere Seiten verschoben
-- todo: Redraw nur wenn nötig!
-	==> Shader-Time ist > 0 (dann bei bkg-bild/-pattern oder bkg_solid_color ==> Shader-Time = 0 setzen)
-	==> Animation-List ist nicht leer
-	==> scrollby != 0
-	==> irgendwas mit der maus verschoben
-	==> CsfmlApp::GotoPage() ausgeführt
-- todo: MouseCorner frei definierbar machen
-
-
-ERLEDIGT:
-- todo: Maus über Icon ==> Finger Cursor
-- Bug: Nach Settings-Dialog (und wohl auch andere Dialoge), wird der erste MouseLeftDown/-Up nicht angenommen
-		==> ebenso, wenn externe App gestartet und wieder geschlossen wird, so dass Fokus wieder auf Places
-- todo: Insgesamt das Maus-Handling / EatMouse
-- Bug: Anklicken erzeugt Undo-Action? ==> Ab wann sind Icons unlinked??? ==> eigentlich erst bei mouse-up kurzfristig zum umsetzen, oder?
-- Bug: rechtsklick auf unselektiertes icon muss alle anderen icons de-selecten
-- Bug: Windowed Mode: maus-klicken tuts nicht
-- todo: ob windowed mode in settings-file schreiben
-- todo: start / open eines icons: ==> es muss iwas animiert werden, optisches Feedback!
-- todo: immer ein bak-file schreiben
-- testen: Layout-change
-- Bug: Layout-change: bei erstem save wird ein pixel mehr für icon_size geschrieben, als sollte!??
-- Bug: Save: hängt sich auf (nur debug build?)
-- todo: wenn keine dateien vorhanden, settings dialog anzeigen
-- todo: option for settings: "suspend when full screen app is running (eg games)"
-- Bug:	Doppelklick auf Icon: Icon wird noch selektiert dargestellt, bei anklicken eines anderen Icons wird es aber entfernt
-		es ist auch nicht wirklich mehr da
-		Behoben. Ursache: Durch Doppelklick war gbEatSingleClick = true, dadurch wurde in MouseDown das Icon unlinked, aber der MouseUp wurde
-		wegen gbEatSingleClick = true nicht ausgeführt, dadurch wurde das Icon nicht wieder gelinkt.
-		Lösung: In MouseDown, wenn gbEatSingleClick = true, wird bail-out durchgeführt, so dass das Icon nicht unlinked wird.
-- Bug:	behoben, steht vermutlich mit Doppelklick-Bug in Zusammenhang
-		Icon ist bereits selektiert
-		es kann dann auch noch mit Rechts angeklickt werden
-		==> es vergrößert sich
-		==> dann ist es "weg"
-
-
-
-- Windows Vista ore higher required, because:
-  wegen SHCreateItemFromParsingName() und IImageFactory: beide erst ab Vista verfügbar.
-  SHGetFileInfo() ist keine Alternative, da (a) wohl nur 16x16 und 32x32 Icons geliefert werden, vor allem aber
-  weil es sich um HICONs handelt. Source Code mit SHGetFileInfo() befindet sich in IconGetter.cpp
-
-
 	Demo Video
 	----------
 - VORBEREITEN: IDEAL Software Icon weg
@@ -194,7 +84,7 @@ ERLEDIGT:
 	- freshly installed, this is what it looks like
 		- installed automatically as autostart
 	- what is places good for?
-	- recommend rerading "readme.txt", lists all keyboard shortcuts and mouse functions and contains 
+	- recommend reading "readme.txt", lists all keyboard shortcuts and mouse functions and contains 
 		additional useful information to get the best out of places. It also explains where the database file is located,
 		if you wish to create backups.
 	- activation
@@ -223,6 +113,7 @@ ERLEDIGT:
 		==> bei 1920 x 1200 kann man 16 x 8 statt 16 x 7 icon layout wählen
 	- add icons
 		- windowed mode und draggen
+		- full-screen mode und alt+tab
 		- right click on blank area "new icon": demo facebook-http-link, mit icon download
 		- right click on icon = properties ==> change title or icon
 		- reload icons
@@ -233,7 +124,7 @@ ERLEDIGT:
 		- keyboard digits
 		- screen up / down
 	- Lasso
-		special: add-select (shift + alt) and subtract-deselect (ctrl + alt)
+		special: subtract-deselect (ctrl + alt) and single select (ctrl)
 				if the lasso covers and then un-covers icons, their previous state is restored!
 	- undo / redo
 	- resize and reposition taskbar
@@ -389,6 +280,7 @@ static HINSTANCE ghInstance;
 static CSettings gSettings;	// global settings, like rows, cols, font size, etc.
 
 static RString gstrIconTitle, gstrFilePath, gstrParameters, gstrIconPath;
+static bool gbOpenAsAdmin;
 static TCHAR szDlgExchange[EDIT_MAX_CHARS + 1];
 
 typedef struct 
@@ -409,7 +301,7 @@ TDefaultIcons gDefaultIcons[] =
 	_T("Computer\nManagement"),		_T("Computer\nVerwaltung"),		_T("computer-4.png"),					_T("<mmc>"),						_T("compmgmt.msc"),
 	_T("Drive\nManagement"),		_T("Datenträger\nVerwaltung"),	_T("server-database.png"),				_T("<mmc>"),						_T("diskmgmt.msc"),
 	_T("Device\nManagement"),		_T("Gerätemanager"),			_T("configure-4.png"),					_T("<mmc>"),						_T("devmgmt.msc"),
-	_T("Tenware"),					_T("Tenware"),					_T("globe.png"),						_T("http://www.tenware.net"),		_T(""),
+	_T("IDEAL\nSoftware"),			_T("IDEAL\nSoftware"),			_T("globe.png"),						_T("http://www.idealsoftware.com"),		_T(""),
 
 	_T("Control Panel"),			_T("System-\nsteuerung"),		_T("system-settings.png"),				_T("<control>"),					_T(""),
 	_T("Add / Remove\nPrograms"),	_T("Programme\nentfernen"),		_T("system-installer.png"),				_T("<control>"),					_T("appwiz.cpl"),
@@ -430,6 +322,7 @@ LRESULT CALLBACK DlgIconProperties(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM
 	switch(Msg)
 	{
 	case WM_INITDIALOG:
+		PostMessage(hWndDlg, WM_NEXTDLGCTL, (WPARAM)GetDlgItem(hWndDlg, ID_ICON_TITLE), TRUE);
 		SendMessage(GetDlgItem(hWndDlg, ID_ICON_TITLE), EM_LIMITTEXT, EDIT_MAX_CHARS, 0);
 		SetDlgItemText(hWndDlg, ID_ICON_TITLE, gstrIconTitle.c_str());
 
@@ -441,6 +334,8 @@ LRESULT CALLBACK DlgIconProperties(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM
 
 		SendMessage(GetDlgItem(hWndDlg, ID_ICON_PATH), EM_LIMITTEXT, EDIT_MAX_CHARS, 0);
 		SetDlgItemText(hWndDlg, ID_ICON_PATH, gstrIconPath.c_str());
+
+		SendMessage(GetDlgItem(hWndDlg, ID_RUN_AS_ADMIN), BM_SETCHECK, gbOpenAsAdmin ? BST_CHECKED : BST_UNCHECKED, 0);
 		return TRUE;
 
 	case WM_COMMAND:
@@ -470,12 +365,22 @@ LRESULT CALLBACK DlgIconProperties(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM
 
 			GetDlgItemText(hWndDlg, ID_FILE_PATH, szDlgExchange, _tcschars(szDlgExchange));
 			gstrFilePath = szDlgExchange;
+			if (gstrFilePath.Right(4).CollateNoCase(_T(".lnk")) == 0)
+			{
+				MessageBox(hWndDlg, _T(".LNK files are not allowed.\n\n"
+					"Please enter directly the name of the file,\n"
+					"where the .LNK shortcut is pointing at."),
+					_T("Error"), MB_ICONSTOP | MB_OK);
+				return FALSE;
+			}
 
 			GetDlgItemText(hWndDlg, ID_PARAMETERS, szDlgExchange, _tcschars(szDlgExchange));
 			gstrParameters = szDlgExchange;
 
 			GetDlgItemText(hWndDlg, ID_ICON_PATH, szDlgExchange, _tcschars(szDlgExchange));
 			gstrIconPath = szDlgExchange;
+
+			gbOpenAsAdmin = SendMessage(GetDlgItem(hWndDlg, ID_RUN_AS_ADMIN), BM_GETCHECK, 0, 0) == BST_CHECKED;
 
 			EndDialog(hWndDlg, 1);
 			return TRUE;
@@ -1446,6 +1351,7 @@ public:				// need access by external thread function to avoid delays when calli
 
 	RString			m_strOpenLocPath;			// path retrieved from an icon, for OpenLocation() / ShellExecute()
 	RString			m_strOpenLocParams;			// parameters retrieved from an icon, for OpenLocation() / ShellExecute()
+	bool			m_bOpenAsAdmin;				// "run as admin" retrieved from an icon, for OpenLocation() / ShellExecute()
 
 	bool			m_bDoFadeInOut;				// fades window in on show window and out on hide window
 	EFadeMode		m_enFade;					// 0 no fade, 1 = fade-in, 2=fade-out
@@ -1486,11 +1392,6 @@ public:
 			m_bHideWithDelay(false),
 			m_bChangeWindowLayout(false)
 	{
-#if 0
-		//m_strLicense = _T("Registered to: Heinz Hartstein • Heinz-Hartstein@Arcor.de • Erlenweg  55 • 47877 Willich - Neersen • Deutschland");
-		m_strLicense = _T("Registered to: Ralph Jansen • ralph.jansen@gmx.ch • Gerberweg 57 • 2560 Nidau • Schweiz");
-#endif
-
 		gbHotkeyVKey = 0;		// virtual key code for app activation
 		gbHotkeyModifiers = 0;	// modifiers for app activation (shift, ctrl, alt)
 
@@ -1504,9 +1405,6 @@ public:
 		m_hCursorHandAddSub = LoadCursor(ghInstance, MAKEINTRESOURCE(HAND_ADD_SUB));
 
 		RunHookThread();
-		//if (!SetHooks())
-		//	MessageBox(NULL, _T("Failed to install keyoard or mouse hook!"), APP_NAME, MB_ICONERROR);
-
 		InitIconShader();
 
 		HICON hTrayIcon = LoadIcon(ghInstance, MAKEINTRESOURCE(IDI_APP_ICON));
@@ -1563,7 +1461,6 @@ public:
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 	~CMyApp()
 	{
-		// ReleaseHooks();
 		DeInitIconShader();
 	}
 
@@ -2088,7 +1985,6 @@ m_Window.setVerticalSyncEnabled(true);
 		try
 		{
 			m_IconManager.WriteToFile(m_strDatabasePath);
-//Sleep(5000);
 		}
 		catch (const Exception &e)
 		{
@@ -2123,6 +2019,7 @@ m_Window.setVerticalSyncEnabled(true);
 
 		m_strOpenLocPath = path;
 		m_strOpenLocParams = icon->m_strParameters;
+		m_bOpenAsAdmin = icon->m_bOpenAsAdmin;
 	}
 
 
@@ -2266,8 +2163,9 @@ m_Window.setVerticalSyncEnabled(true);
 		const TCHAR *menuUndo = _T("Undo");
 		const TCHAR *menuRedo = _T("Redo");
 		const TCHAR *menuSave = _T("Save");
-		const TCHAR *menuReloadIcons = _T("Reload Icons");
+		const TCHAR *menuReloadIcons = _T("Reload Icon Bitmaps");
 		const TCHAR *menuSettings = _T("Settings");
+		const TCHAR *menuHelp = _T("Help");
 		const TCHAR *menuAbout = _T("About");
 		const TCHAR *menuExit = _T("Exit");
 
@@ -2299,20 +2197,10 @@ m_Window.setVerticalSyncEnabled(true);
 		menu.AddItem(menuReloadIcons);
 		menu.AddSeparator();
 		menu.AddItem(menuSettings);
+		menu.AddItem(menuHelp);
 		menu.AddItem(menuAbout);
 		menu.AddSeparator();
 		menu.AddItem(menuExit);
-
-		/*CPopupMenu submenu(_T("Osc 1"));
-		submenu.AddItem(_T("Volume"));
-		submenu.AddItem(_T("Pan"));
-		submenu.AddItem(_T("Tuning St"));
-		submenu.AddItem(_T("Tuning Fine"));
-		submenu.AddItem(_T("WT Pos"));
-		submenu.AddItem(_T("Flt Cutoff"));
-		submenu.AddItem(_T("Flt Drive"));
-		submenu.AddItem(_T("Flt Reso"));
-		menu.AddItem(_T("Osc  1"), &submenu);*/
 
 		HWND hwnd = m_Window.getSystemHandle();
 		if (menu.DoPopupMenu(hwnd, x, y))
@@ -2417,6 +2305,10 @@ m_Window.setVerticalSyncEnabled(true);
 
 				SaveSettings();
 			}
+			else if (menu.GetSelectedEntry() == menuHelp)
+			{
+				ShellExecute(m_Window.getSystemHandle(), _T("open"), _T("http://idealsoftware.com/places"), NULL, NULL, SW_SHOWNORMAL);
+			}
 			else if (menu.GetSelectedEntry() == menuAbout)
 			{
 				DialogBox(ghInstance, MAKEINTRESOURCE(IDD_ABOUT), m_Window.getSystemHandle(), reinterpret_cast<DLGPROC>(DlgAbout));
@@ -2441,14 +2333,20 @@ m_Window.setVerticalSyncEnabled(true);
 			gstrFilePath = icon->GetFilePath();
 			gstrParameters = icon->m_strParameters;
 			gstrIconPath = icon->GetIconPath();
+			gbOpenAsAdmin = icon->m_bOpenAsAdmin;
 			if (DialogBox(ghInstance, MAKEINTRESOURCE(IDD_ICON_PROPERTIES), m_Window.getSystemHandle(), reinterpret_cast<DLGPROC>(DlgIconProperties)) != 1)
 				return false;
+
+			// only for .exe "open as admin" is allowed
+			if (gstrFilePath.right(4).CompareNoCase(_T(".exe")) != 0)
+				gbOpenAsAdmin = false;
 
 			// anything changed?
 			if (gstrIconTitle == icon->GetFullTitle() &&
 				gstrFilePath == icon->GetFilePath() &&
 				gstrParameters == icon->m_strParameters &&
-				gstrIconPath == icon->GetIconPath())
+				gstrIconPath == icon->GetIconPath() &&
+				gbOpenAsAdmin == icon->m_bOpenAsAdmin)
 			{
 				// no changes at all, do not create an undo action
 				return false;
@@ -2462,6 +2360,7 @@ m_Window.setVerticalSyncEnabled(true);
 			icon->SetIconPath(m_IconManager.GetBitmapCache(), gstrIconPath);	// icon path always first! (see SetFilePath() comment)
 			icon->SetFilePath(m_IconManager.GetBitmapCache(), gstrFilePath);
 			icon->m_strParameters = gstrParameters;
+			icon->m_bOpenAsAdmin = gbOpenAsAdmin;
 	
 			if (with_undo)
 				m_IconManager.PushUndoAction(undo);
@@ -2481,10 +2380,19 @@ m_Window.setVerticalSyncEnabled(true);
 		CPopupMenu menu(_T("Main"));
 
 		const TCHAR *menuIconProperties = _T("Properties");
+		const TCHAR *menuRunAsAdmin = _T("Run As Administrator");
 		const TCHAR *menuRemove = _T("Remove");
+
+		CIcon *icon = m_IconManager.GetSelectedIcons().front();
+
 		if (m_IconManager.GetSelectedIcons().size() == 1)
 		{
 			menu.AddItem(menuIconProperties);
+
+			// option "run as admin" only available for executables, not for locations
+			if (icon->GetFilePath().right(4).CompareNoCase(_T(".exe")) == 0)
+				menu.AddItem(menuRunAsAdmin);
+
 			menu.AddSeparator();
 		}
 		menu.AddItem(menuRemove);
@@ -2499,6 +2407,12 @@ m_Window.setVerticalSyncEnabled(true);
 			else if (menu.GetSelectedEntry() == menuIconProperties)
 			{
 				IconPropertyDialog();
+			}
+			else if (menu.GetSelectedEntry() == menuRunAsAdmin)
+			{
+				m_bOpenAsAdmin = true;
+				HideMainWindowWithDelay();
+				RetrieveOpenLocation(icon);		// OpenLocation() is called, when the icon animation has finished
 			}
 		}
 	}
@@ -3610,8 +3524,16 @@ unsigned __stdcall ResyncThread(void *param)
 unsigned __stdcall ShellExecuteThread(void *param)
 {
 	CMyApp *app = (CMyApp *)param;
-	ShellExecute(app->GetRenderWindow().getSystemHandle(), _T("open"), app->m_strOpenLocPath.c_str(), app->m_strOpenLocParams.c_str(), GetPath(app->m_strOpenLocPath).c_str(), SW_SHOWNORMAL);
+
+	const TCHAR *verb;
+	if (app->m_bOpenAsAdmin)
+		verb = _T("runas");
+	else
+		verb = _T("open");
+
+	ShellExecute(app->GetRenderWindow().getSystemHandle(), verb, app->m_strOpenLocPath.c_str(), app->m_strOpenLocParams.c_str(), GetPath(app->m_strOpenLocPath).c_str(), SW_SHOWNORMAL);
 	app->m_strOpenLocPath.clear();
+	app->m_bOpenAsAdmin = false;
 
 	return 1;
 }

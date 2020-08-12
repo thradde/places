@@ -112,7 +112,11 @@ void CSettings::ReadFromFile(const RString &file_name)
 // --------------------------------------------------------------------------------------------------------------------------------------------
 void CSettings::WriteToFile(const RString &file_name, int cur_page_num, bool fullscreen) const
 {
+	// create .bak file
+	_tunlink((file_name + _T(".bak")).c_str());
 	_trename(file_name.c_str(), (file_name + _T(".bak")).c_str());
+
+	// write settings
 	Stream stream(file_name, _T("wb"));
 
 	// Magic + Version

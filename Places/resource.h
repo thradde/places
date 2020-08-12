@@ -30,6 +30,7 @@
 #define ID_FILE_PATH                            40005
 #define ID_IMAGE                                40005
 #define ID_COLOR                                40006
+#define ID_RUN_AS_ADMIN                         40006
 #define ID_TILE_IMAGE                           40007
 #define ID_BROWSE_IMAGE                         40008
 #define ID_BROWSE_COLOR                         40009

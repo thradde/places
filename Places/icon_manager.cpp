@@ -651,7 +651,11 @@ void CIconManager::ReadFromFile(const RString &file_name)
 // --------------------------------------------------------------------------------------------------------------------------------------------
 void CIconManager::WriteToFile(const RString &file_name) const
 {
+	// create .bak file
+	_tunlink((file_name + _T(".bak")).c_str());
 	_trename(file_name.c_str(), (file_name + _T(".bak")).c_str());
+
+	// write DB
 	Stream stream(file_name, _T("wb"));
 
 	// Magic + Version

@@ -210,7 +210,7 @@ void CIcon::CreateOrAddCachedBitmap(CBitmapCache &bitmap_cache)
 		
 		// If it is a LNK-file, resolve the target name.
 		// We do this, because executing a link is *much* slower than executing the resolved EXE directly.
-		if (m_strFilePath.right(4) == _T(".lnk") || m_strFilePath.right(4) == _T(".LNK"))
+		if (m_strFilePath.right(4).CompareNoCase(_T(".lnk")) == 0)
 		{
 			RString target;
 			if (SUCCEEDED(ResolveLink(NULL, m_strFilePath, target)))
@@ -227,6 +227,7 @@ CIcon::CIcon(CBitmapCache &bitmap_cache, const RString &strTitle, const RString 
 	:	m_strFilePath(strFilePath),
 		m_strIconPath(strIconPath),
 		m_strFullTitle(strTitle),
+		m_bOpenAsAdmin(false),
 		m_enState(enStateNormal),
 		m_fTargetScale(1.f),
 		m_MovedBy(0, 0),
@@ -256,7 +257,7 @@ CIcon::CIcon(Stream &stream)
 {
 	m_strFilePath = stream.ReadString();
 	m_strParameters = stream.ReadString();
-//	m_bUseShellApi = stream.ReadBool();
+	m_bOpenAsAdmin = stream.ReadBool();
 	m_strIconPath = stream.ReadString();
 	m_strFullTitle = stream.ReadString();
 
@@ -287,7 +288,7 @@ void CIcon::Write(Stream &stream) const
 {
 	stream.WriteString(m_strFilePath);
 	stream.WriteString(m_strParameters);
-//	stream.WriteBool(m_bUseShellApi);
+	stream.WriteBool(m_bOpenAsAdmin);
 	stream.WriteString(m_strIconPath);
 	stream.WriteString(m_strFullTitle);
 	
@@ -305,8 +306,6 @@ void CIcon::Write(Stream &stream) const
 		CMD5Hash dummy;
 		dummy.Write(stream);
 	}
-	
-	// todo: scaled draw texture noch schreiben? oder in CIcon::CIcon(Stream &stream) ==> CreateIcon() aufrufen?
 }
 
 

@@ -180,6 +180,7 @@ public:
 	RString	m_strOldIconPath;
 	RString	m_strOldFilePath;
 	RString	m_strOldParameters;
+	bool m_bOldOpenAsAdmin;
 
 public:
 	CIconPropertiesAction(CIcon *icon)
@@ -187,8 +188,8 @@ public:
 			m_strOldTitle(icon->GetFullTitle()),
 			m_strOldIconPath(icon->GetIconPath()),
 			m_strOldFilePath(icon->GetFilePath()),
-			m_strOldParameters(icon->m_strParameters)
-			//m_bOldUseShellApi(icon->m_bUseShellApi)
+			m_strOldParameters(icon->m_strParameters),
+			m_bOldOpenAsAdmin(icon->m_bOpenAsAdmin)
 	{
 	}
 

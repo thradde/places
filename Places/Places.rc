@@ -8,14 +8,12 @@
 #include "resource.h"
 
 
-WAVE_CLICK WAVE click.wav
 
-ARROW_SELECT_ADD	CURSOR	"arrow select add.cur"
-ARROW_SELECT_SUB	CURSOR	"arrow select sub.cur"
-ARROW_ADD_SUB		CURSOR	"arrow add sub.cur"
-HAND_SELECT_ADD		CURSOR	"hand select add.cur"
-HAND_SELECT_SUB		CURSOR	"hand select sub.cur"
-HAND_ADD_SUB		CURSOR	"hand add sub.cur"
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+WAVE_CLICK         WAVE           "click.wav"
+
+
 
 //
 // Menu resources
@@ -44,10 +42,10 @@ STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VIS
 CAPTION "About"
 FONT 8, "Ms Shell Dlg"
 {
-    CONTROL         "Tenware BV", ID_WEBLINK, WC_BUTTON, WS_TABSTOP | BS_COMMANDLINK, 21, 40, 145, 25, WS_EX_LEFT
-    LTEXT           "Places v1.0 Beta", -1, 65, 10, 55, 9, SS_LEFT, WS_EX_LEFT
+    CONTROL         "IDEAL Software GmbH", ID_WEBLINK, WC_BUTTON, WS_TABSTOP | BS_COMMANDLINK, 21, 40, 145, 25, WS_EX_LEFT
+    LTEXT           "Places v1.0", -1, 75, 10, 36, 9, SS_LEFT, WS_EX_LEFT
     DEFPUSHBUTTON   "OK", IDOK, 68, 80, 50, 14, 0, WS_EX_LEFT
-    LTEXT           "Copyright (c) 2017", -1, 64, 25, 58, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "Copyright (c) 2020", -1, 66, 25, 54, 9, SS_LEFT, WS_EX_LEFT
 }
 
 
@@ -59,6 +57,7 @@ EXSTYLE WS_EX_WINDOWEDGE
 CAPTION "Icon Properties"
 FONT 8, "Ms Shell Dlg"
 {
+    AUTOCHECKBOX    "Run as Administrator", ID_RUN_AS_ADMIN, 45, 95, 78, 8, 0, WS_EX_LEFT
     EDITTEXT        ID_ICON_TITLE, 45, 7, 275, 25, ES_AUTOHSCROLL | ES_MULTILINE | ES_WANTRETURN, WS_EX_LEFT
     EDITTEXT        ID_FILE_PATH, 45, 38, 275, 15, ES_AUTOHSCROLL, WS_EX_LEFT
     PUSHBUTTON      ". . .", ID_FILE_BROWSE, 326, 38, 15, 15, 0, WS_EX_LEFT
@@ -119,6 +118,34 @@ FONT 8, "Ms Shell Dlg"
     LTEXT           "Rows", -1, 43, 257, 19, 9, SS_LEFT, WS_EX_LEFT
     LTEXT           "Font Size", -1, 140, 237, 30, 9, SS_LEFT, WS_EX_LEFT
 }
+
+
+
+//
+// Cursor resources
+//
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+ARROW_ADD_SUB      CURSOR         "arrow add sub.cur"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+ARROW_SELECT_ADD   CURSOR         "arrow select add.cur"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+ARROW_SELECT_SUB   CURSOR         "arrow select sub.cur"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+HAND_ADD_SUB       CURSOR         "hand add sub.cur"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+HAND_SELECT_ADD    CURSOR         "hand select add.cur"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+HAND_SELECT_SUB    CURSOR         "hand select sub.cur"
 
 
 

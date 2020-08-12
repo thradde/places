@@ -133,8 +133,7 @@ public:
 	RString			m_strIconPath;		// if set, specifies external icon file
 	RString			m_strFilePath;		// the exe-path or folder-link or whatever shall be represented as an icon
 	RString			m_strParameters;	// optional parameters that shall be passed to an executable
-	//bool			m_bUseShellApi;		// if true, the icon bitmap shall be retrieved using the shell API.
-										// otherwise m_strIconPath points to a real bitmap file that shall be used as an icon
+	bool			m_bOpenAsAdmin;		// user specified to open the icon as admin
 	RString			m_strFullTitle;
 	CIconText		m_Title;			// layout of title string
 
