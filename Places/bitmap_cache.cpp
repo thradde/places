@@ -196,44 +196,7 @@ void CBitmap::Read(Stream &stream)
 	// pixel format (always 0 = RGBA)
 	stream.ReadInt();
 
-#if 1
 	m_pBitmap = ReadBinaryData(stream);
-#else
-
-	// compression type (0 = no bitmap data, 1 = uncompressed, 2 = zlib)
-	m_pBitmap = nullptr;
-	int comp_type = stream.ReadInt();
-	if (comp_type == 0)
-	{
-		// no bitmap data, bail out
-		return;
-	}
-
-	// uncompressed size
-	unsigned int uncomp_size = stream.ReadUInt();
-	unsigned int comp_size = stream.ReadUInt();
-
-	m_pBitmap = new BYTE[uncomp_size];
-
-	if (comp_type == 0)
-	{
-		// uncompressed data
-		stream.Read(m_pBitmap, GetDataSize());
-	}
-	else
-	{
-		// uncompressed data
-		BYTE *tmp_buf = new BYTE[comp_size];
-		stream.Read(tmp_buf, comp_size);
-		if (!ZlibUncompress(tmp_buf, comp_size, m_pBitmap, uncomp_size))
-		{
-			// todo: use some placeholder bitmap
-			delete m_pBitmap;
-			m_pBitmap = nullptr;
-		}
-		delete[] tmp_buf;
-	}
-#endif
 }
 
 
@@ -249,50 +212,7 @@ void CBitmap::Write(Stream &stream) const
 	// pixel format (0 = RGBA)
 	stream.WriteInt(0);
 
-#if 1
 	WriteBinaryData(stream, m_pBitmap, GetDataSize());
-#else
-
-	if (!m_pBitmap)
-	{
-		// no bitmap data
-		// write compression type = 0 and bail out
-		stream.WriteInt(0);
-		return;
-	}
-
-	// try to compress bitmap data
-	unsigned int comp_size;
-	void *comp_buf = ZlibCompress(m_pBitmap, GetDataSize(), comp_size);
-
-	// compression type (0 = no bitmap data, 1 = uncompressed, 2 = zlib)
-	if (comp_buf)
-		stream.WriteInt(2);
-	else
-		stream.WriteInt(1);
-
-	// uncompressed size
-	stream.WriteUInt(GetDataSize());
-
-	// write bitmap
-	if (comp_buf)
-	{
-		// size of compressed data
-		stream.WriteUInt(comp_size);
-
-		// compressed data
-		stream.Write(comp_buf, comp_size);
-		free(comp_buf);
-	}
-	else
-	{
-		// uncompressed data, write size 0 for compressed data size
-		stream.WriteUInt(0);
-
-		// write uncompressed bitmap
-		stream.Write(m_pBitmap, GetDataSize());
-	}
-#endif
 }
 
 
@@ -341,11 +261,7 @@ bool CBitmapCacheItem::LoadBitmapFile(const RString &strFilePath)
 		// image could not be loaded
 		// SFML can not load 16-bit per channel png, try lodepng lib
 
-/*		// convert to ansi string first
-		int count = WideCharToMultiByte(CP_ACP, WC_DEFAULTCHAR, strFilePath.c_str(), -1, NULL, 0, NULL);
-		char *ansi_str = (char *)malloc(count);
-		count = WideCharToMultiByte(CP_ACP, WC_DEFAULTCHAR, strFilePath.c_str(), -1, NULL, 0, NULL);
-		*/
+		// convert to ansi string first
 		unsigned w, h;
 		std::string str;
 		str = s.toAnsiString();
@@ -556,7 +472,7 @@ void CBitmapCacheItem::CreateScaledDrawTexture(int pixels)
 	{
 		// todo: mark icon as undrawable ==> use a default bitmap!
 		// this should never happen, because the image loader will then return an error and this code never gets
-		// executed, as the "image not found" cacheitem is always used in that case
+		// executed, as the "image not found" cache item is always used in that case
 		return;
 	}
 
@@ -577,23 +493,6 @@ void CBitmapCacheItem::CreateScaledDrawTexture(int pixels)
 
 	m_DrawTexture.update((sf::Uint8 *)resampled);
 	m_DrawTexture.setSmooth(true);
-
-	/* sample code
-	texture.update((sf::Uint8 *)bitmap);
-	delete[] bitmap;
-	sf::Image image = texture.copyToImage();
-	image.saveToFile("e:\\vbox icon gauss.png");
-	texture.setSmooth(true);
-	sf::Sprite sprite(texture);
-	sprite.setScale((float)gConfig.m_nIconSize / (float)width, (float)gConfig.m_nIconSize / (float)height);
-
-	m_Texture.create(gConfig.m_nIconSize, gConfig.m_nIconSize);
-	m_Texture.draw(sprite);
-	m_Texture.display();
-
-	m_Texture.setSmooth(true);
-	m_Sprite.setTexture(m_Texture.getTexture());
-	*/
 }
 
 

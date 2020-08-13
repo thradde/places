@@ -140,6 +140,9 @@
     <ClInclude Include="my_resampler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="memdebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Places.rc">

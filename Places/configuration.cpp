@@ -180,12 +180,6 @@ void CConfig::ComputeLayout(const CSettings &settings)
 	if (rows > max_rows)
 		rows = max_rows;
 
-	/*
-	float xfactor = ((float)m_nWindowWidth / (float)cols) / (fRefResolutionX / fRefCols);
-	float yfactor = ((float)m_nWindowHeight / (float)rows) / (fRefResolutionY / fRefRows);
-	m_fScaleFactor = min(xfactor, yfactor);
-	*/
-
 	// compute the scale factor (for font and other stuff)
 	float horz_scale = (float)m_nWindowWidth / fRefResolutionX;
 	float vert_scale = (float)m_nWindowHeight / fRefResolutionY;

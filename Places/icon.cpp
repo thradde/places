@@ -180,11 +180,6 @@ void CIcon::RenderTitleTextLayout()
 			if (title[(int)i] == _T('\n'))
 				break;
 
-			/*RString tmp(title.Left(i + 1));
-			gConfig.m_pText->setString(tmp.c_str());
-			sf::FloatRect rc = gConfig.m_pText->getGlobalBounds();
-
-			gConfig.m_pText->setString(title.c_str());*/
 			pos = gConfig.m_pText->findCharacterPos(i + 1);		// it is the pos, so we need the start-pos of the next character
 			if (pos.x > gConfig.m_nTextWidth)
 				break;
@@ -203,7 +198,6 @@ void CIcon::RenderTitleTextLayout()
 
 		// when using the bounds of the sprite in DrawTitle():
 		m_Title.AddLine(CIconTextLine(title.substr(0, i + 1), (gConfig.m_nIconSizeX - width) / 2));
-		//m_Title.AddLine(CIconTextLine(title.substr(0, i + 1), width / 2));
 		title.remove(0, i + 1);
 	}
 }
@@ -413,13 +407,10 @@ void CIcon::CreateIcon(int pixels, bool force_create)
 	{
 		if (force_create || m_pCachedBitmap->GetDrawTexture().getSize().x != pixels)
 				m_pCachedBitmap->CreateScaledDrawTexture(pixels);
-
-		// assign texture to sprite and setup sprite
-//		m_Sprite.setTexture(m_pCachedBitmap->GetDrawTexture(), true);
 	}
 
 	// if the real screen resolution is changed, it is essential to re-assign the texture to the sprite!
-	// otherwise some icons and the positons of their titles are wrong.
+	// otherwise some icons and the positions of their titles are wrong.
 	m_Sprite.setTexture(m_pCachedBitmap->GetDrawTexture(), true);
 	m_Sprite.setOrigin((float)pixels / 2.f, (float)pixels / 2.f);
 	m_Sprite.setColor(sf::Color(255, 255, 255, 255));
@@ -466,43 +457,14 @@ void CIcon::DrawTitle(sf::RenderWindow &window, sf::Text &text)
 	// float y = floor(rc.top + rc.height + m_MovedBy.y + gConfig.ScaleCoord(6) + 0.5f);
 #else
 	float y = floor(pos.y + m_Sprite.getTextureRect().height / 2.f - m_MovedBy.y + gConfig.ScaleCoord(6) + 0.5f);
-	//pos.x -= m_Sprite.getTextureRect().width / 2.f;
 #endif
 
 	float line_spacing = text.getFont()->getLineSpacing((int)(text.getCharacterSize())) - 1;	// -1 looks better
 
-	/* Highlight the text - deactivated, doesn't look that good
-
-	float org_y = y;
-	if (m_enState == enStateHighlight || m_enState == enStateDragging)
-	{
-		// draw selection background 
-		_foreach(it, m_Title.m_arTextLines)
-		{
-			text.setString(it->m_strText.c_str());
-			float x = floor(rc.left - m_MovedBy.x + it->m_nOffset + 0.5f);
-
-			text.setPosition(x, y);
-			sf::FloatRect backgroundRect = text.getGlobalBounds();
-			sf::RectangleShape background(sf::Vector2f(backgroundRect.width + 4, line_spacing + 2));
-			background.setPosition(x - 1, y - 1);
-			//background.setFillColor(sf::Color(0, 107, 215));
-			background.setFillColor(sf::Color(255, 170, 21));
-			window.draw(background);
-
-			y += line_spacing;
-		}
-	}
-
-	y = org_y;*/
 	for (auto it : m_Title.m_arTextLines)
 	{
 		text.setString(it.m_strText.c_str());
-#if 1
 		float x = floor(rc.left - m_MovedBy.x + it.m_nOffset + 0.5f);
-#else
-		float x = floor(pos.x - it->m_nOffset + 0.5f);
-#endif
 		text.setPosition(x + 1, y + 1);
 		text.setColor(sf::Color(0x40, 0x40, 0x40));
 		window.draw(text);

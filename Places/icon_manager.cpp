@@ -208,11 +208,6 @@ void CIconManager::UnlinkIcon(CIcon *icon)
 {
 	m_IconPages[icon->GetPosition().m_nPage].SetItem(icon->GetPosition().m_RasterPos, nullptr);
 	icon->SetIsUnlinked(true);
-
-	/*bool bFail;
-	CRasterPos pos = m_itCurPage->Find(icon, bFail);
-	m_itCurPage->SetItem(pos, nullptr);
-	icon->SetIsUnlinked(true);*/
 }
 
 
@@ -223,12 +218,6 @@ void CIconManager::UnlinkIcon(CIcon *icon)
 // --------------------------------------------------------------------------------------------------------------------------------------------
 bool CIconManager::PlaceIcon(CIcon *icon, const CIconPos &pos)
 {
-	// fail, if new position is occupied by another icon
-	/*bool bFail;
-	CIcon *target = m_IconPages[pos.m_nPage].GetItem(pos.m_RasterPos, bFail);
-	if (bFail || (target != nullptr && target != icon))
-		return false;*/
-
 	// move to new position
 	m_IconPages[pos.m_nPage].SetItem(pos.m_RasterPos, icon);
 	icon->SetIsUnlinked(false);
@@ -412,60 +401,6 @@ void CIconManager::StartLassoMode(bool do_select)
 // Settles all selected icons in their current positions, if possible.
 // Used during mouse-move operation.
 // --------------------------------------------------------------------------------------------------------------------------------------------
-#if 0
-void CIconManager::PlaceSelectedIcons()
-{
-	sf::Vector2f icon_pos;
-
-	// if no icon changed the position, do not create an undo action
-	bool has_changed_pos = false;
-
-	_foreach(it, m_listSelectedIcons)
-	{
-		CIconPos new_pos(ComputeRasterPos((int)(*it)->GetSpritePosition().x, (int)(*it)->GetSpritePosition().y), m_nCurPageNum);
-		if (new_pos != (*it)->GetBackupPosition())
-		{
-			has_changed_pos = true;
-			break;
-		}
-	}
-
-	CIconUndoGroup *undo_group = new CIconUndoGroup();
-
-	_foreach(it, m_listSelectedIcons)
-	{
-		if (has_changed_pos)
-			undo_group->Add(new CIconMoveAction(*it, (*it)->GetBackupPosition()));
-
-		icon_pos = (*it)->GetSpritePosition();
-
-		if (!PlaceIconOnCurrentPage(*it, (int)icon_pos.x, (int)icon_pos.y))
-		{
-			// The new position is occupied by another icon, move ALL icons back to original position.
-			// Unfortunately it is required for logical correctness to move ALL icons back, because
-			// the original position of a moved-back icon might be occupied by another moved icon otherwise.
-			int current_page = GetCurrentPageNum();
-			CIconPos backup_pos;
-			_foreach(it_moveback, m_listSelectedIcons)
-			{
-				if (!(*it_moveback)->GetIsUnlinked())
-					UnlinkIcon(*it_moveback);
-				backup_pos = (*it_moveback)->GetBackupPosition();
-				PlaceIcon(*it_moveback, backup_pos);
-			}
-
-			delete undo_group;	// this is not used now
-			return;				// quit
-		}
-	}
-
-	if (has_changed_pos)
-		PushUndoAction(undo_group);
-	else
-		delete undo_group;
-}
-
-#else
 void CIconManager::PlaceSelectedIcons()
 {
 	sf::Vector2f icon_pos;
@@ -532,7 +467,6 @@ void CIconManager::PlaceSelectedIcons()
 
 	PushUndoAction(undo_group);
 }
-#endif
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -628,7 +562,6 @@ void CIconManager::ResyncIcons()
 // --------------------------------------------------------------------------------------------------------------------------------------------
 //														CIconManager::ReadFromFile()
 // --------------------------------------------------------------------------------------------------------------------------------------------
-//extern CSettings gSettings;
 void CIconManager::ReadFromFile(const RString &file_name)
 {
 	Stream stream(file_name, _T("rb"));
@@ -646,8 +579,6 @@ void CIconManager::ReadFromFile(const RString &file_name)
 	m_nMaxCols = stream.ReadInt();
 	m_nMaxRows = stream.ReadInt();
 	m_nDbIconSize = stream.ReadInt();
-//	gSettings.Read(stream);
-//	stream.ReadInt();
 
 	// read bitmap cache
 	m_BitmapCache.Read(stream);

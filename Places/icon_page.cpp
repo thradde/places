@@ -53,11 +53,6 @@ CIconPage::CIconPage(CIconPage &&page)
 	m_nCols = page.m_nCols;
 	m_nRows = page.m_nRows;
 
-	/*int count = m_nCols * m_nRows;
-	m_arIcons = new CIcon*[count];
-	for (int i = 0; i < count; i++)
-		m_arIcons[i] = page.m_arIcons[i];*/
-
 	m_arIcons = page.m_arIcons;
 	page.m_arIcons = nullptr;
 }

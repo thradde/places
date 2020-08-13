@@ -1421,7 +1421,6 @@ public:
 		{
 			try
 			{
-				//SetCursor(LoadCursor(ghInstance, IDC_WAIT));
 				gSettings.ReadFromFile(m_strSettingsPath);
 				m_IconManager.ReadFromFile(m_strDatabasePath);
 				m_IconManager.GotoPage(gSettings.m_nCurPageNum);
@@ -1688,9 +1687,6 @@ public:
 
 		// setup main window
 		unsigned int style = sf::Style::None;
-//style = sf::Style::Titlebar;
-//if (!m_Shader.loadFromFile("E:\\source\\Places\\Shaders\\ether.frag", sf::Shader::Fragment))
-//	MessageBox(m_Window.getSystemHandle(), _T("Error loading shader!"), APP_NAME, MB_ICONERROR);
 		if (m_enWindowStyle == enWsWindowed)
 			style = sf::Style::Titlebar; // +sf::Style::Close;
 		sf::ContextSettings context;
@@ -1718,9 +1714,8 @@ public:
 		// "Threaded Optimization = Off" in the nVidia driver panel finally did the trick.
 		// (whatever Threaded Optimization means... found it using google)
 		//	m_Window.setFramerateLimit(60);
-m_Window.setFramerateLimit(0);
-m_Window.setVerticalSyncEnabled(true);
-//m_Window.setVerticalSyncEnabled(false);
+		m_Window.setFramerateLimit(0);
+		m_Window.setVerticalSyncEnabled(true);
 
 		m_bStartup = false;
 		CheckNagScreen();
@@ -1745,7 +1740,7 @@ m_Window.setVerticalSyncEnabled(true);
 		{
 			MessageBox(m_Window.getSystemHandle(),
 				_T("The beta period for \"Places\" has expired.\n\n")
-				_T("Please check at www.tenware.net, if a newer version is available.\n\n"),
+				_T("Please check at www.idealsoftware.com, if a newer version is available.\n\n"),
 				APP_NAME, MB_ICONERROR);
 			exit(1);
 		}
@@ -1912,9 +1907,6 @@ m_Window.setVerticalSyncEnabled(true);
 		}
 	}
 
-
-//	in generic.cpp: m_bSuspendEvents, und dann wedewr poll() noch Work() aufrufen
-	//	==> dann läuft der thread trotzdem nicht, also ich muss ja zB icons neu scalen
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 	//															CMyApp::ControlKeyPressed()
@@ -2104,11 +2096,6 @@ m_Window.setVerticalSyncEnabled(true);
 		m_View.setCenter((float)page_num * w + w / 2.f, h / 2.f);
 
 		// synthesize mouse move event, so *everything* is updated correctly, especially regarding currently dragged icons
-		//sf::Event event;
-		//float dx = (float)(page_num - old_page_num);
-		//dx *= w;
-		//event.mouseMove.x = (int)(m_LastMousePos.x + dx);
-		//event.mouseMove.y = (int)m_LastMousePos.y;
 		sf::Event event;
 		event.mouseMove.x = (int)m_LastMousePos.x;
 		event.mouseMove.y = (int)m_LastMousePos.y;

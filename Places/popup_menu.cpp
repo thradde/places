@@ -24,8 +24,6 @@
 
 #include <SFML/Graphics.hpp>
 
-//#include <tchar.h>
-
 #include <vector>
 using namespace std;
 

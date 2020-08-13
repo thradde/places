@@ -192,7 +192,6 @@ class CIconPropertiesAction : public CIconAction
 {
 public:
 	RString	m_strOldTitle;
-	//bool	m_bOldUseShellApi;
 	RString	m_strOldIconPath;
 	RString	m_strOldFilePath;
 	RString	m_strOldParameters;

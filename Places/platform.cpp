@@ -384,13 +384,12 @@ RString GetKeyComboString(BYTE hotkey, BYTE virtkey)
 //
 // http://www.codeproject.com/Tips/76427/How-to-bring-window-to-top-with-SetForegroundWindo
 // --------------------------------------------------------------------------------------------------------------------------------------------
-#if 1		// bessere Version, behebt wohl Hänger mit der Tastatur
 void SetForegroundWindowInternal(HWND hWnd)
 {
 	if (!hWnd || !::IsWindow(hWnd))
 		return;
 
-	//to unlock SetForegroundWindow we need to imitate pressing [Alt] key
+	// to unlock SetForegroundWindow we need to imitate pressing [Alt] key
 	bool bPressed = false;
 	if ((::GetAsyncKeyState(VK_MENU) & 0x8000) == 0)
 	{
@@ -407,210 +406,6 @@ void SetForegroundWindowInternal(HWND hWnd)
 		::keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
 	}
 }
-
-#else
-
-// teilweise Hänger mit der Tastatur
-void SetForegroundWindowInternal(HWND hWnd)
-{
-	if (!::IsWindow(hWnd))
-		return;
-
-	BYTE keyState[256] = {0};
-	// to unlock SetForegroundWindow we need to imitate Alt pressing
-	// ==>	someone in the internet suggested to use GetAsyncKeystate() here, because GetKeyboardState() doesn't work
-	//		correctly, when this code is triggered by an ALT+Key combination.
-	if (::GetKeyboardState((LPBYTE)&keyState))
-	{
-		if (!(keyState[VK_MENU] & 0x80))
-		{
-			::keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
-		}
-	}
-
-	::SetForegroundWindow(hWnd);
-
-	if (::GetKeyboardState((LPBYTE)&keyState))
-	{
-		if (!(keyState[VK_MENU] & 0x80))
-		{
-			::keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
-		}
-	}
-}
-#endif
-
-
-// -----------------------------------------------------------------------------------------------------------
-// Sehr vielversprechend soll auch die WIN API Funktion SwitchToThisWindow() sein,
-// die aber als deprecated markiert ist
-// -----------------------------------------------------------------------------------------------------------
-
-
-#if 0	// noch eine version
-		//  In this version we attach the input processing mechanism of our thread to that of active thread
-void SetForegroundWindowInternal(HWND hWnd)
-{
-	if (!::IsWindow(hWnd)) return;
-
-	//relation time of SetForegroundWindow lock
-	DWORD lockTimeOut = 0;
-	HWND  hCurrWnd = ::GetForegroundWindow();
-	DWORD dwThisTID = ::GetCurrentThreadId(),
-		dwCurrTID = ::GetWindowThreadProcessId(hCurrWnd, 0);
-
-	//we need to bypass some limitations from Microsoft :)
-	if (dwThisTID != dwCurrTID)
-	{
-		::AttachThreadInput(dwThisTID, dwCurrTID, TRUE);
-
-		::SystemParametersInfo(SPI_GETFOREGROUNDLOCKTIMEOUT, 0, &lockTimeOut, 0);
-		::SystemParametersInfo(SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 0, SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE);
-
-		::AllowSetForegroundWindow(ASFW_ANY);
-	}
-
-	::SetForegroundWindow(hWnd);
-
-	if (dwThisTID != dwCurrTID)
-	{
-		::SystemParametersInfo(SPI_SETFOREGROUNDLOCKTIMEOUT, 0, (PVOID)lockTimeOut, SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE);
-		::AttachThreadInput(dwThisTID, dwCurrTID, FALSE);
-	}
-}
-#endif
-
-
-// sonstiger code
-// {
-// 	Windows 98 / 2000 doesn't want to foreground a window when
-// 		some other window has the keyboard focus.
-// 		ForceForegroundWindow is an enhanced SetForeGroundWindow / bringtofront
-// 		function to bring a window to the front.
-// }
-// 
-// 
-// {
-// 	Manchmal funktioniert die SetForeGroundWindow Funktion
-// 		nicht so, wie sie sollte; besonders unter Windows 98 / 2000,
-// 		wenn ein anderes Fenster den Fokus hat.
-// 		ForceForegroundWindow ist eine "verbesserte" Version von
-// 		der SetForeGroundWindow API - Funktion, um ein Fenster in
-// 		den Vordergrund zu bringen.
-// }
-// 
-// 
-// function ForceForegroundWindow(hwnd: THandle) : Boolean;
-// const
-// SPI_GETFOREGROUNDLOCKTIMEOUT = $2000;
-// SPI_SETFOREGROUNDLOCKTIMEOUT = $2001;
-// var
-// ForegroundThreadID : DWORD;
-// ThisThreadID: DWORD;
-// timeout: DWORD;
-// begin
-// if IsIconic(hwnd) then ShowWindow(hwnd, SW_RESTORE);
-// 
-// if GetForegroundWindow = hwnd then Result : = True
-// else
-// begin
-// // Windows 98/2000 doesn't want to foreground a window when some other
-// // window has keyboard focus
-// 
-// if ((Win32Platform = VER_PLATFORM_WIN32_NT) and (Win32MajorVersion > 4)) or
-// ((Win32Platform = VER_PLATFORM_WIN32_WINDOWS) and
-// 	((Win32MajorVersion > 4) or ((Win32MajorVersion = 4) and
-// 		(Win32MinorVersion > 0)))) then
-// 	begin
-// 	// Code from Karl E. Peterson, www.mvps.org/vb/sample.htm
-// 	// Converted to Delphi by Ray Lischner
-// 	// Published in The Delphi Magazine 55, page 16
-// 
-// 	Result : = False;
-// ForegroundThreadID: = GetWindowThreadProcessID(GetForegroundWindow, nil);
-// ThisThreadID: = GetWindowThreadPRocessId(hwnd, nil);
-// if AttachThreadInput(ThisThreadID, ForegroundThreadID, True) then
-// begin
-// BringWindowToTop(hwnd); // IE 5.5 related hack
-// SetForegroundWindow(hwnd);
-// AttachThreadInput(ThisThreadID, ForegroundThreadID, False);
-// Result: = (GetForegroundWindow = hwnd);
-// end;
-// if not Result then
-// begin
-// // Code by Daniel P. Stasinski
-// SystemParametersInfo(SPI_GETFOREGROUNDLOCKTIMEOUT, 0, @timeout, 0);
-// SystemParametersInfo(SPI_SETFOREGROUNDLOCKTIMEOUT, 0, TObject(0),
-// 	SPIF_SENDCHANGE);
-// BringWindowToTop(hwnd); // IE 5.5 related hack
-// SetForegroundWindow(hWnd);
-// SystemParametersInfo(SPI_SETFOREGROUNDLOCKTIMEOUT, 0, TObject(timeout), SPIF_SENDCHANGE);
-// end;
-// end
-// else
-// begin
-// BringWindowToTop(hwnd); // IE 5.5 related hack
-// SetForegroundWindow(hwnd);
-// end;
-// 
-// Result: = (GetForegroundWindow = hwnd);
-// end;
-// end; { ForceForegroundWindow }
-// 
-// 
-// // 2. Way:
-// //**********************************************
-// 
-// procedure ForceForegroundWindow(hwnd: THandle);
-// // (W) 2001 Daniel Rolf
-// // http://www.finecode.de
-// // rolf@finecode.de
-// var
-// hlp : TForm;
-// begin
-// hlp : = TForm.Create(nil);
-// try
-// hlp.BorderStyle : = bsNone;
-// hlp.SetBounds(0, 0, 1, 1);
-// hlp.FormStyle : = fsStayOnTop;
-// hlp.Show;
-// mouse_event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-// mouse_event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-// SetForegroundWindow(hwnd);
-// finally
-// hlp.Free;
-// end;
-// end;
-// 
-// // 3. Way:
-// //**********************************************
-// // by Thomas Stutz
-// 
-// {
-// 	As far as you know the SetForegroundWindow function on Windows 98 / 2000 can
-// 		not force a window to the foreground while the user is working with another window.
-// 		Instead, SetForegroundWindow will activate the window and call the FlashWindowEx
-// 		function to notify the user.However in some kind of applications it is necessary
-// 		to make another window active and put the thread that created this window into the
-// 		foreground and of course, you can do it using one more undocumented function from
-// 		the USER32.DLL.
-// 
-// 		void SwitchToThisWindow(HWND hWnd,  // Handle to the window that should be activated
-// 			BOOL bRestore // Restore the window if it is minimized
-// 			);
-// 
-// }
-// 
-// procedure SwitchToThisWindow(h1: hWnd; x: bool); stdcall;
-// external user32 Name 'SwitchToThisWindow';
-// {x = false: Size unchanged, x = true : normal size}
-// 
-// 
-// procedure TForm1.Button2Click(Sender: TObject);
-// begin
-// SwitchToThisWindow(FindWindow('notepad', nil), True);
-// end;
-
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -874,29 +669,6 @@ bool ThereIsAFullscreenWin()
 
 	return bThereIsAFullscreenWin;
 }
-
-
-/* Alternativ:
-bool AreSameRECT (RECT& lhs, RECT& rhs)
-{
-	return lhs.bottom == rhs.bottom && lhs.left == lhs.left && lhs.right == rhs.right && lhs.top == rhs.top;
-}
-
-
-bool IsFullscreenAndMaximized(HWND hWnd)
-{
-	RECT screen_bounds;
-	GetWindowRect(GetDesktopWindow(), &screen_bounds);
-
-	RECT app_bounds;
-	GetWindowRect(hWnd, &app_bounds);
-
-	if(hWnd != GetDesktopWindow() && hWnd != GetShellWindow())
-		return AreSameRECT(app_bounds, screen_bounds);
-
-	return false;
-}
-*/
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------

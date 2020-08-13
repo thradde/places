@@ -121,16 +121,6 @@ void CIconPropertiesAction::PerformUndo(CIconManager &icon_manager, int pass)
 		m_strOldTitle = tmp;		// for inverted redo action
 	}
 
-	/*
-	// use shell api
-	bool b = m_pIcon->m_bUseShellApi;
-	if (b != m_bOldUseShellApi)
-	{
-		m_pIcon->m_bUseShellApi = m_bOldUseShellApi;
-		m_bOldUseShellApi = b;
-	}
-	*/
-
 	// icon path
 	tmp = m_pIcon->GetIconPath();
 	if (tmp != m_strOldIconPath)
