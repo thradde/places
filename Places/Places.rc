@@ -37,15 +37,19 @@ IDR_TRAY_MENU MENUEX
 // Dialog resources
 //
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDD_ABOUT DIALOG 0, 0, 186, 108
+IDD_ABOUT DIALOG 0, 0, 242, 225
 STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
 CAPTION "About"
 FONT 8, "Ms Shell Dlg"
 {
-    CONTROL         "IDEAL Software GmbH", ID_WEBLINK, WC_BUTTON, WS_TABSTOP | BS_COMMANDLINK, 21, 40, 145, 25, WS_EX_LEFT
-    LTEXT           "Places v1.0", -1, 75, 10, 36, 9, SS_LEFT, WS_EX_LEFT
-    DEFPUSHBUTTON   "OK", IDOK, 68, 80, 50, 14, 0, WS_EX_LEFT
-    LTEXT           "Copyright (c) 2020", -1, 66, 25, 54, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "Author: Thorsten Radde", -1, 85, 63, 72, 9, SS_LEFT, WS_EX_LEFT
+    CONTROL         "IDEAL Software GmbH", ID_WEBLINK, WC_BUTTON, WS_TABSTOP | BS_COMMANDLINK, 54, 35, 135, 25, WS_EX_LEFT
+    LTEXT           "Places v1.0", -1, 103, 10, 36, 9, SS_LEFT, WS_EX_LEFT
+    DEFPUSHBUTTON   "OK", IDOK, 96, 199, 50, 14, 0, WS_EX_LEFT
+    LTEXT           "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.", -1, 11, 80, 220, 33, SS_LEFT, WS_EX_LEFT
+    LTEXT           "Copyright (c) 2020", -1, 94, 25, 54, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.", -1, 11, 117, 220, 35, SS_LEFT, WS_EX_LEFT
+    LTEXT           "You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.", -1, 11, 158, 220, 30, SS_LEFT, WS_EX_LEFT
 }
 
 

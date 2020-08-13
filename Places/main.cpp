@@ -1,15 +1,19 @@
 
-// BUGS:
-// -----
-// - Versionsnummern = 0.9 Beta setzen, Author: T. Radde
+// Copyright (C) 2020 IDEAL Software GmbH, Neuss, Germany.
+// www.idealsoftware.com
+// Author: Thorsten Radde
 //
-// - Firmenname in About und in EULA (!) ==> Tenware
+// This program is free software; you can redistribute it and/or modify it under the terms of the GNU 
+// General Public License as published by the Free Software Foundation; either version 2 of the License, 
+// or (at your option) any later version.
 //
-// - CheckNagScreen() testen, insbesondere qswitch könnte nicht mehr funktionieren, da lost focus kommt
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even 
+// the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public 
+// License for more details.
 //
-// - Win 10 testen: Ob alle Default-Icons funktionieren
+// You should have received a copy of the GNU General Public License along with this program; if not, 
+// write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110 - 1301, USA.
 //
-// - mit ShellExecute()-Verb "runas" kann man Programme elevated starten!
 
 
 #define STRICT
@@ -365,14 +369,6 @@ LRESULT CALLBACK DlgIconProperties(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM
 
 			GetDlgItemText(hWndDlg, ID_FILE_PATH, szDlgExchange, _tcschars(szDlgExchange));
 			gstrFilePath = szDlgExchange;
-			if (gstrFilePath.Right(4).CollateNoCase(_T(".lnk")) == 0)
-			{
-				MessageBox(hWndDlg, _T(".LNK files are not allowed.\n\n"
-					"Please enter directly the name of the file,\n"
-					"where the .LNK shortcut is pointing at."),
-					_T("Error"), MB_ICONSTOP | MB_OK);
-				return FALSE;
-			}
 
 			GetDlgItemText(hWndDlg, ID_PARAMETERS, szDlgExchange, _tcschars(szDlgExchange));
 			gstrParameters = szDlgExchange;
@@ -2307,7 +2303,7 @@ m_Window.setVerticalSyncEnabled(true);
 			}
 			else if (menu.GetSelectedEntry() == menuHelp)
 			{
-				ShellExecute(m_Window.getSystemHandle(), _T("open"), _T("http://idealsoftware.com/places"), NULL, NULL, SW_SHOWNORMAL);
+				ShellExecute(m_Window.getSystemHandle(), _T("open"), _T("http://idealsoftware.com/opensource/places.html"), NULL, NULL, SW_SHOWNORMAL);
 			}
 			else if (menu.GetSelectedEntry() == menuAbout)
 			{
