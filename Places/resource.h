@@ -48,3 +48,5 @@
 #define ID_FONT_SIZE                            40020
 #define ID_SCROLL_JUMP                          40021
 #define ID_DISABLE_MAXIMIZED                    40022
+#define ID_GRP_OTHER                            40023
+#define ID_PLAY_CLICK_SOUND                     40024

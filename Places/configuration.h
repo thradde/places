@@ -43,6 +43,7 @@ public:
 
 	bool		m_bScrollWheelJumps;// if true, the scroll wheel jumps to the next page instead of scrolling
 	bool		m_bDisableIfMaxWin;	// if true, the hooks are disabled if the foreground window is maximized (eg it is a game)
+	bool		m_bPlayClickSound;	// if true, a click sound is played when an icon is opened
 
 	int			m_nCurPageNum;		// this is set during file read and only used by the app-constructor: visible page when app was quit
 	bool		m_bFullscreen;		// this is set during file read and only used by the app-constructor: if window was fullscreen when app was quit
@@ -58,6 +59,7 @@ public:
 			m_clrBkgColor(RGB(0x0a, 0x3b, 0x76)),
 			m_bScrollWheelJumps(false),
 			m_bDisableIfMaxWin(true),
+			m_bPlayClickSound(true),
 			m_nCurPageNum(0),
 			m_bFullscreen(true)
 	{
@@ -106,7 +108,8 @@ public:
 			m_nIconTitleLines != rhs.m_nIconTitleLines ||
 			BkgChanged(rhs) ||
 			m_bScrollWheelJumps != rhs.m_bScrollWheelJumps ||
-			m_bDisableIfMaxWin != rhs.m_bDisableIfMaxWin;
+			m_bDisableIfMaxWin != rhs.m_bDisableIfMaxWin ||
+			m_bPlayClickSound != rhs.m_bPlayClickSound;
 	}
 };
 

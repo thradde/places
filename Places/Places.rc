@@ -107,7 +107,8 @@ FONT 8, "Ms Shell Dlg"
     PUSHBUTTON      ". . .", ID_BROWSE_COLOR, 392, 185, 15, 14, 0, WS_EX_LEFT
     EDITTEXT        ID_COLUMNS, 70, 235, 30, 14, ES_AUTOHSCROLL, WS_EX_RIGHT
     EDITTEXT        ID_ROWS, 70, 255, 30, 14, ES_AUTOHSCROLL, WS_EX_RIGHT
-    EDITTEXT        ID_FONT_SIZE, 175, 235, 30, 14, ES_AUTOHSCROLL, WS_EX_RIGHT
+    EDITTEXT        ID_FONT_SIZE, 168, 235, 30, 14, ES_AUTOHSCROLL, WS_EX_RIGHT
+    AUTOCHECKBOX    "Play Click Sound", ID_PLAY_CLICK_SOUND, 225, 235, 67, 8, 0, WS_EX_LEFT
     DEFPUSHBUTTON   "OK", IDOK, 306, 294, 50, 14, 0, WS_EX_LEFT
     PUSHBUTTON      "Cancel", IDCANCEL, 365, 294, 50, 14, 0, WS_EX_LEFT
     LTEXT           "Hotkey", -1, 40, 27, 24, 9, SS_LEFT, WS_EX_LEFT
@@ -117,10 +118,11 @@ FONT 8, "Ms Shell Dlg"
     LTEXT           "Image", -1, 43, 152, 20, 9, SS_LEFT, WS_EX_LEFT
     LTEXT           "Solid Color", -1, 30, 187, 34, 9, SS_LEFT, WS_EX_LEFT
     LTEXT           "Shader Speed", -1, 17, 132, 46, 9, SS_LEFT, WS_EX_LEFT
-    GROUPBOX        "Icon Layout", ID_GRP_ICON_LAYOUT, 10, 220, 405, 60, 0, WS_EX_LEFT
+    GROUPBOX        "Icon Layout", ID_GRP_ICON_LAYOUT, 10, 220, 195, 60, 0, WS_EX_LEFT
+    GROUPBOX        "Other", ID_GRP_OTHER, 215, 220, 200, 61, 0, WS_EX_LEFT
     LTEXT           "Columns", -1, 37, 237, 28, 9, SS_LEFT, WS_EX_LEFT
     LTEXT           "Rows", -1, 43, 257, 19, 9, SS_LEFT, WS_EX_LEFT
-    LTEXT           "Font Size", -1, 140, 237, 30, 9, SS_LEFT, WS_EX_LEFT
+    LTEXT           "Font Size", -1, 133, 237, 30, 9, SS_LEFT, WS_EX_LEFT
 }
 
 

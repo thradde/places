@@ -66,6 +66,7 @@ void CSettings::Read(Stream &stream)
 
 	m_bScrollWheelJumps = stream.ReadBool();
 	m_bDisableIfMaxWin = stream.ReadBool();
+	m_bPlayClickSound = stream.ReadBool();
 
 	gbHotkeyVKey = stream.ReadByte();		// virtual key code for app activation
 	gbHotkeyModifiers = stream.ReadByte();	// modifiers for app activation (shift, ctrl, alt, win)
@@ -92,6 +93,7 @@ void CSettings::Write(Stream &stream) const
 
 	stream.WriteBool(m_bScrollWheelJumps);
 	stream.WriteBool(m_bDisableIfMaxWin);
+	stream.WriteBool(m_bPlayClickSound);
 
 	stream.WriteByte(gbHotkeyVKey);			// virtual key code for app activation
 	stream.WriteByte(gbHotkeyModifiers);	// modifiers for app activation (shift, ctrl, alt)

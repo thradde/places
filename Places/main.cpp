@@ -35,6 +35,7 @@
 
 #include <vector>
 #include <set>
+#include <unordered_map>
 using namespace std;
 
 #define ASSERT
@@ -467,7 +468,7 @@ public:
 	}
 };
 
-typedef map<HWND, CHotkeyData> THotkeyData;
+typedef unordered_map<HWND, CHotkeyData> THotkeyData;
 typedef THotkeyData::iterator THotkeyDataIter;
 
 THotkeyData mapHotkeyData;
@@ -494,17 +495,19 @@ THotkeyData mapHotkeyData;
 // WM_SYSKEYDOWN	Calls the DefWindowProc function if the key is ENTER, TAB, SPACE BAR, DEL, ESC, or BACKSPACE.If the key is SHIFT, CTRL, or ALT, it checks whether the combination is valid and, if it is, sets the hot key using the combination.All other keys are set as hot keys without their validity being checked first.
 // WM_SYSKEYUP		Retrieves the virtual key code.
 
-// Edit Subclass procedure
+// Edit Hotkey Subclass procedure
 LRESULT APIENTRY EditHotkeyProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	CHotkeyData &data = mapHotkeyData[hwnd];
 	BYTE LastHotkeyModifiers;
+	LRESULT lres;
 
 	switch (uMsg)
 	{
 	case WM_GETDLGCODE:
-		return DLGC_WANTCHARS + DLGC_WANTARROWS;
-		// return DLGC_WANTALLKEYS;
+		lres = CallWindowProc(wpOrigEditProc, hwnd, uMsg, wParam, lParam);
+		lres |= DLGC_WANTCHARS + DLGC_WANTARROWS;
+		return lres;
 
 	case WM_CREATE:
 		//mapHotkeyData.insert(pair<HWND, CHotkeyData>(hwnd, CHotkeyData())); ==> done by declaration: CHotkeyData &data = mapHotkeyData[hwnd];
@@ -566,7 +569,9 @@ LRESULT APIENTRY EditHotkeyProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			break;
 
 		case VK_LWIN:
-		case VK_RWIN:	data.HotkeyModifiers &= ~HotkeyWin; break;
+		case VK_RWIN:
+			data.HotkeyModifiers &= ~HotkeyWin;
+			break;
 
 		case VK_TAB:
 			break;
@@ -638,6 +643,7 @@ LRESULT APIENTRY EditHotkeyProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 	return CallWindowProc(wpOrigEditProc, hwnd, uMsg, wParam, lParam);
 }
+
 
 
 // Combobox Drop Down List Subclass procedure
@@ -751,6 +757,8 @@ LRESULT CALLBACK DlgSettings(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lPara
 		SetDlgItemText(hWndDlg, ID_ROWS, szDlgExchange);
 		_itot(gSettings.m_nIconFontSize, szDlgExchange, 10);
 		SetDlgItemText(hWndDlg, ID_FONT_SIZE, szDlgExchange);
+
+		SendMessage(GetDlgItem(hWndDlg, ID_PLAY_CLICK_SOUND), BM_SETCHECK, gSettings.m_bPlayClickSound ? BST_CHECKED : BST_UNCHECKED, 0);
 		return TRUE;
 	
 	case WM_NCDESTROY:
@@ -833,6 +841,7 @@ LRESULT CALLBACK DlgSettings(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lPara
 			gnMouseCorner = SendMessage(GetDlgItem(hWndDlg, ID_MOUSE_CORNER), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			gSettings.m_bScrollWheelJumps = SendMessage(GetDlgItem(hWndDlg, ID_SCROLL_JUMP), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			gSettings.m_bDisableIfMaxWin = SendMessage(GetDlgItem(hWndDlg, ID_DISABLE_MAXIMIZED), BM_GETCHECK, 0, 0) == BST_CHECKED;
+			gSettings.m_bPlayClickSound = SendMessage(GetDlgItem(hWndDlg, ID_PLAY_CLICK_SOUND), BM_GETCHECK, 0, 0) == BST_CHECKED;
 
 			GetDlgItemText(hWndDlg, ID_SHADER, szDlgExchange, _tcschars(szDlgExchange));
 			gSettings.m_strShaderFile = szDlgExchange;
@@ -2029,7 +2038,8 @@ public:
 	{
 		CIcon *icon = m_IconManager.GetSelectedIcons().front();
 		m_IconManager.SetIconState(icon, CIcon::enStateOpen);
-		PlaySound(_T("WAVE_CLICK"), ghInstance, SND_RESOURCE | SND_ASYNC); 
+		if (gSettings.m_bPlayClickSound)
+			PlaySound(_T("WAVE_CLICK"), ghInstance, SND_RESOURCE | SND_ASYNC); 
 		HideMainWindowWithDelay();
 		RetrieveOpenLocation(icon);		// OpenLocation() is called, when the icon animation has finished
 	}
