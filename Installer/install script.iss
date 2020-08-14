@@ -33,7 +33,6 @@ ArchitecturesInstallIn64BitMode=x64
 [Files]
 Source: "..\Release\Places.exe"; DestDir: "{app}"; Flags: ignoreversion 32bit; Check: not IsWin64
 Source: "..\x64\Release\Places.exe"; DestDir: "{app}"; Flags: ignoreversion 64bit; Check: IsWin64
-Source: "..\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\img-not-found.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\user-trash-full.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
 Source: "..\OpenIconLibrary\system-settings.png"; DestDir: "{commonappdata}\{#MyAppName}\icons"; Flags: ignoreversion
@@ -111,7 +110,6 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppName}.exe"; WorkingDir: "{userappdata}\{#MyAppName}"; IconFilename: "{app}\{#MyAppName}.exe"; IconIndex: 0
 Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\{#MyAppName}.exe"; WorkingDir: "{userappdata}\{#MyAppName}"; IconFilename: "{app}\{#MyAppName}.exe"
-Name: "{group}\Readme.txt"; Filename: "{app}\Readme.txt"
 
 [Run]
 Filename: {app}\{#MyAppName}.exe; Description: Run Application; Flags: postinstall nowait skipifsilent

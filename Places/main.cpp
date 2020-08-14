@@ -1199,6 +1199,8 @@ LRESULT CALLBACK TrayNotifyWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
 				gbSuspendHooks = false;
 			gTrayIcon.CheckMenuItem(ID_MENU_SUSPEND, gbSuspendHooks);
 		}
+		else if (wParam == ID_MENU_HELP)
+			ShellExecute(hwnd, _T("open"), _T("http://idealsoftware.com/opensource/places.html"), NULL, NULL, SW_SHOWNORMAL);
 		else if (wParam == ID_MENU_EXIT)
 			gpNotifyApp->CloseMainWindow();
 		break;

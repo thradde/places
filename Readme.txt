@@ -3,8 +3,8 @@
     Places Design Goals
     -------------------
 
--   Starting applications or opening folder-/ file links as quick as possible with a minimum
-    number of user interactions (i.e. mouse clicks, keys presses).
+-   Starting applications or opening folder-/ file links as quickly as possible with a minimum
+    number of user interactions (i.e. mouse clicks, key presses).
 
 -   Everything stays in its place: icons will always stay in the same position, where you once placed them.
     No sorting, no re-ordering, no changes if the resolution of the screen changes. Instead, the icons 
@@ -20,12 +20,12 @@
     - Intuitive and fast user interface
     - Places is moved to the front of the screen and is not hidden by other windows
     - unlimited undo and redo (ctrl + z, ctrl + y)
-    - Lasso to select and de-select groups of items (groups of icons can be arranged or moved to other pages)
+    - Lasso to select and de-select groups of items (alt + left-click to drag lasso, groups of icons can be arranged or moved to other pages)
     - provides a total of 10 pages
     - special windowed mode, also useful to drag apps and folders into "Places"
     - wipe to scroll between pages
     
-    - activate / hide Places with a definable special mouse-button, if you have more than 2 mouse-buttons
+    - activate / hide Places with a definable special mouse-button, if you have more than 2 mouse-buttons (5-button mouse recommended)
     - activation can be suspended, when a full-screen app is running in foreground, e.g. a game
     - activate / hide Places with a definable special key, or key combination, eg F12
     - activate Places with a double-click into the free desktop space of the Windows Program Manager

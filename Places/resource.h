@@ -24,6 +24,7 @@
 #define ID_MOUSE_CORNER                         40002
 #define ID_PARAMETERS                           40002
 #define ID_ICON_TITLE                           40003
+#define ID_MENU_HELP                            40003
 #define ID_SHADER                               40003
 #define ID_BROWSE_SHADER                        40004
 #define ID_ICON_BROWSE                          40004
