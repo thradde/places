@@ -253,7 +253,7 @@ static bool SetHooks()
 	// setup variables
 	_hWndApp = NULL;
 
-	gbHotkeyVKey = 123;			// F12
+	gbHotkeyVKey = VK_F12;
 	gbHotkeyModifiers = HotkeyCtrl;
 	gnMouseButton = 1;			// middle mouse-button
 	gnMouseCorner = 1;			// yes

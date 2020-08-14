@@ -706,11 +706,14 @@ LRESULT CALLBACK DlgSettings(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lPara
 	HWND hWndComboBox;
 	bool tile, scale;
 	static COLORREF clrTmpBkgColor;
+	static bool org_suspend_hooks;
 
 	switch(Msg)
 	{
 	case WM_INITDIALOG:
 		// Subclass the edit control
+		org_suspend_hooks = gbSuspendHooks;
+		gbSuspendHooks = true;
 		wpOrigEditProc = (WNDPROC)SetWindowLongPtr(GetDlgItem(hWndDlg, ID_HOTKEY), GWLP_WNDPROC, (LONG_PTR)EditHotkeyProc);
 		SendMessage(GetDlgItem(hWndDlg, ID_HOTKEY), WM_MY_SETKEYS, gbHotkeyModifiers, gbHotkeyVKey);
 
@@ -764,6 +767,7 @@ LRESULT CALLBACK DlgSettings(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lPara
 	case WM_NCDESTROY:
 		// Remove the subclass from the edit control.
 		SetWindowLongPtr(GetDlgItem(hWndDlg, ID_HOTKEY), GWLP_WNDPROC, (LONG_PTR)wpOrigEditProc);
+		gbSuspendHooks = org_suspend_hooks;
 		break;
 
 	case WM_HSCROLL:	// trackbar notification
