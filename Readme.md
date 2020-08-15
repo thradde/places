@@ -24,4 +24,11 @@ Everything stays in its place: icons will always stay in the same position, wher
 
 ## System Requirements
  - Windows Vista or higher
- - Graphics Card with OpenGL driver (i.e. any modern Graphics Card)
+ - Graphics Card with OpenGL driver
+
+## Download
+Download the installer Places setup here.
+
+## Links
+[Youtube Video](https://youtu.be/onOWVSTzzqM)
+Company Website: [www.idealsoftware.com](www.idealsoftware.com)
