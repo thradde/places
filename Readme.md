@@ -27,7 +27,7 @@ Everything stays in its place: icons will always stay in the same position, wher
  - Graphics Card with OpenGL driver (i.e. any modern Graphics Card)
 
 ## Download
-Download the binary installer at [www.idealsoftware.com](www.idealsoftware.com/opensource/places.html).
+Download the binary installer at [www.idealsoftware.com](https://www.idealsoftware.com/opensource/places.html).
 
 ## Links
 [Youtube Video](https://youtu.be/onOWVSTzzqM)
