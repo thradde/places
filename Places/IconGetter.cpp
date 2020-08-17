@@ -430,7 +430,6 @@ bool MyGetIconInfo(HICON hIcon, MyIconInfo &info)
 
 HICON GetIcon(LPCTSTR filePath)
 {
-#if 1
 	// Get the icon index using SHGetFileInfo
 	SHFILEINFO sfi = { 0 };
 	SHGetFileInfo(filePath, 0, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX);
@@ -451,14 +450,6 @@ HICON GetIcon(LPCTSTR filePath)
 		if (hResult == S_OK)
 			return hIcon;
 	}
-#else
-	// Get the icon index using SHGetFileInfo
-	SHFILEINFO sfi = { 0 };
-	if (SHGetFileInfo(filePath, 0, &sfi, sizeof(sfi), SHGFI_ICON | SHGFI_LARGEICON))
-	{
-		return sfi.hIcon;
-	}
-#endif
 
 	return nullptr;
 }
@@ -748,7 +739,7 @@ DIBitmap CreateDIBitmapFromHICON(HICON icon, int &size_x, int &size_y)
 		uint32* p = bits;
 		for(size_t i=0; i<num_pixels; ++p,++i)
 		{
-			if(opaque[i])
+			if (opaque[i])
 				*p |= 0xff000000;
 			else
 				*p &= 0x00ffffff;
