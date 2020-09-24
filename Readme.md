@@ -1,5 +1,6 @@
 # Places: Windows Application Launcher
 
+![Screenshot](screenshot_small.png)
 
 ## Design Goals
 Starting applications or opening folder-/ file links as quickly as possible with a minimum number of user interactions (i.e. mouse clicks, key presses).
