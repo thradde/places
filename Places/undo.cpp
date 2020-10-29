@@ -26,7 +26,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
-#include <set>
+#include <unordered_set>
 using namespace std;
 
 #define ASSERT

@@ -25,7 +25,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <set>
+#include <unordered_set>
 using namespace std;
 
 #include "zlib/zlib.h"

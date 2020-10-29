@@ -54,6 +54,12 @@ public:
 	{
 		return memcmp(m_HashValue, rhs.m_HashValue, nHashSize) < 0;
 	}
+
+	// this method is a bit confusing. it returns part of the MD5 has hash-table hash (for use in std::unordered_set<>)
+	void GetHashTableHash(std::size_t &hash_value) const
+	{
+		memcpy(&hash_value, m_HashValue, sizeof(hash_value));
+	}
 };
 
 
@@ -257,27 +263,33 @@ public:
 
 		return m_nRefCount;
 	}
-
-	// for stl::set sorting
-	bool operator < (const CBitmapCacheItem &rhs) const
-	{
-		return m_Hash < rhs.m_Hash;
-	}
 };
 
 
-// Comparison functor
-class CCompareBitmapCacheItem
+// functor that compares cache items for use with unordered_set<> TBitmapCacheSet
+class CHashEquality
 {
 public:
-	bool operator() (const CBitmapCacheItem *p1, const CBitmapCacheItem *p2) const
+	bool operator()(const CBitmapCacheItem *lhs, const CBitmapCacheItem *rhs) const
 	{
-		return *p1 < *p2;
+		return lhs->GetHash() == rhs->GetHash();
 	}
 };
 
 
-typedef set<CBitmapCacheItem *, CCompareBitmapCacheItem> TBitmapCacheSet;
+// functor that creates hash value of cache item for use with unordered_set<> TBitmapCacheSet
+class CHashBitmapCacheItem
+{
+public:
+	std::size_t operator()(const CBitmapCacheItem *cache_item) const
+	{
+		std::size_t hash_value;
+		cache_item->GetHash().GetHashTableHash(hash_value);
+		return hash_value;
+	}
+};
+
+typedef unordered_set<CBitmapCacheItem *, CHashBitmapCacheItem, CHashEquality> TBitmapCacheSet;
 typedef TBitmapCacheSet::iterator TBitmapCacheSetIter;
 
 
